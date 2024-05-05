@@ -7,13 +7,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role {
+
+    public Role(Long id) {
+        this.id = id;
+    }  
 
     public Role(String name, String desc){
         this.name = name;
@@ -22,6 +28,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "name", length = 40, nullable = false, unique = true)
@@ -29,4 +36,9 @@ public class Role {
 
     @Column(name = "description", length = 150, nullable = false)
     private String Description;
+
+    @Override
+    public String toString() {
+        return "Role [id=" + id + ", name=" + name + ", Description=" + Description + "]";
+    }
 }
