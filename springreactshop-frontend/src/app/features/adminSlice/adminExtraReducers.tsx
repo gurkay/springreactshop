@@ -1,7 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
-import { IAdminInitialState } from "../../../interfaces/IAdminInitialState";
+import { IAdminDto, IAdminInitialState } from "../../../interfaces/IAdminInitialState";
 import { getAdminHome } from "./adminCreateAsyncThunk";
-import { IAdminDto } from "../../../interfaces/IAdminDto";
 import { StatusConsts } from "../../../constants/StatusConsts";
 
 export const adminExtraReducers = {
