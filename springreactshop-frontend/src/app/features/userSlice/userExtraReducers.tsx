@@ -1,7 +1,8 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
-import { IUserDto, IUserInitialState } from "../../../interfaces/IUserInitialState";
+import { IUserInitialState } from "../../../interfaces/IUserInitialState";
 import { getAllUsers } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
+import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
 export const userExtraReducers = {
     builderGetAllUsers: function(builder: ActionReducerMapBuilder<IUserInitialState>) {

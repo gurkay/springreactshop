@@ -1,6 +1,4 @@
-export interface IAdminDto {
-    result: string;
-}
+import { IAdminDto } from "./dtos/IAdminDto";
 
 export interface IAdminInitialState {
     admin:IAdminDto;

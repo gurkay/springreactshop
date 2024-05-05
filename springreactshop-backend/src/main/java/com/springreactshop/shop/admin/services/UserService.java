@@ -18,6 +18,8 @@ public class UserService {
     private IUserRepository userRepository;
 
     public List<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        System.out.println("UserService:::getAllUsers:::" + users);
         return userRepository.findAll();
     }
 

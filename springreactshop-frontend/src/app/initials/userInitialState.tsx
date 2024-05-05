@@ -1,8 +1,8 @@
 import { StatusConsts } from "../../constants/StatusConsts";
 import { emptyUser } from "../../constants/emptyUser";
-import { IUserInitialStat } from "../../interfaces/IUserInitialState";
+import { IUserInitialState } from "../../interfaces/IUserInitialState";
 
-export const userInitialState: IUserInitialStat = {
+export const userInitialState: IUserInitialState = {
     user: emptyUser,
     users: [],
     loading: false,
