@@ -3,6 +3,7 @@ import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect } from "react";
 import { getAllUsers } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
+import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 
 const ListUsersComponent = () => {
 
@@ -39,7 +40,10 @@ const ListUsersComponent = () => {
                                 <td>{user.photos}</td>
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>
-                                <td>roles</td>
+                                <td>{
+                                        user.roles.map((role: IRoleDto) => (<span key={role.id}>{role.name} </span>))
+                                    }                               
+                                </td>
                                 <td>{(user.enabled) ? "true" : "false"}</td>
                                 <td className="text-center">
                                     <button 

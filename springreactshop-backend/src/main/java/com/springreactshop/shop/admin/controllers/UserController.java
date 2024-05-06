@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springreactshop.shop.admin.services.UserService;
-import com.springreactshop.shop.common.entities.User;
-
-import lombok.AllArgsConstructor;
+import com.springreactshop.shop.common.dtos.UserDto;
 
 @CrossOrigin("*")
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/v1/admin")
 public class UserController {
     
@@ -23,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 }

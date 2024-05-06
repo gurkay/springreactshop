@@ -1,3 +1,5 @@
+import { IRoleDto } from "./IRoleDto";
+
 export interface IUserDto {
     id: number,
     email: string,
@@ -6,5 +8,5 @@ export interface IUserDto {
     lastName: string,
     photos: string,
     enabled: boolean,
-    roles: string[],
+    roles: IRoleDto[],
 }

@@ -8,12 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "roles")
 public class Role {
 
@@ -23,7 +27,7 @@ public class Role {
 
     public Role(String name, String desc){
         this.name = name;
-        this.Description = desc;
+        this.description = desc;
     }
 
     @Id
@@ -35,10 +39,10 @@ public class Role {
     private String name;
 
     @Column(name = "description", length = 150, nullable = false)
-    private String Description;
+    private String description;
 
     @Override
     public String toString() {
-        return "Role [id=" + id + ", name=" + name + ", Description=" + Description + "]";
+        return this.name;
     }
 }
