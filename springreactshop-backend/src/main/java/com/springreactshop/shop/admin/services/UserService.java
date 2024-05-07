@@ -23,4 +23,9 @@ public class UserService {
 
         return usersDtos;
     }
+
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id).get();
+        return UserMapper.mapToUserDto(user);
+    }
 }
