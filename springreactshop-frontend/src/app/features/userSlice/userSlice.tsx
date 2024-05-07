@@ -8,6 +8,7 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         userExtraReducers.builderGetAllUsers(builder);
+        userExtraReducers.builderGetUserById(builder);
     }
 });
 
