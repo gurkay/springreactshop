@@ -1,11 +1,6 @@
 package com.springreactshop.shop.admin.interfaces.repositories.user;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import com.springreactshop.shop.common.entities.Role;
 import com.springreactshop.shop.common.entities.User;
 
 public interface IUserRepository extends JpaRepository<User, Long>{
