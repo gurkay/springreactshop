@@ -37,7 +37,7 @@ const ListUsersComponent = () => {
                 </div>
             </div>
             <div className="container">
-                <table className="table table-striped table-bordered table-hover">
+                <table className="table table-striped table-bordered table-hover table-responsive">
                     <thead className="thead-dark">
                         <tr>
                             <th scope="col">#</th>

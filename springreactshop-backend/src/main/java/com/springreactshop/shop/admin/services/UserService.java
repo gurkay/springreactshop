@@ -12,7 +12,7 @@ import com.springreactshop.shop.common.entities.User;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService<UserDto> {
 
     @Autowired
     private IUserRepository userRepository;
