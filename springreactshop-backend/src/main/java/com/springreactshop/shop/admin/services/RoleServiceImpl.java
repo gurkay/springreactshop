@@ -10,7 +10,7 @@ import com.springreactshop.shop.admin.interfaces.services.role.IRoleService;
 import com.springreactshop.shop.common.dtos.RoleDto;
 
 @Service
-public class RoleService implements IRoleService<RoleDto> {
+public class RoleServiceImpl implements IRoleService<RoleDto> {
     
     @Autowired
     private IRoleRepository roleRepository;

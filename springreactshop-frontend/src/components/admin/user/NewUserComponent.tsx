@@ -1,24 +1,36 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserById } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import FormNewUserComponent from "../forms/FormNewUserComponent";
+import { emptyUserWithoutId } from "../../../constants/emptyUser";
+import { IUserDtoWithoutId } from "../../../interfaces/dtos/IUserDto";
 
 const NewUserComponent = () => {
     const dispatch = useDispatch<AppDispatch>();
     const selectorUser = useSelector((state: RootState) => state.userReducer);
     const navigate = useNavigate();
     const { userId } = useParams();
+    const [userInput, setUserInput] = useState<IUserDtoWithoutId>(emptyUserWithoutId);
 
     useEffect(() => {
-        getUser(Number(userId));
+        if(userId) {
+            getUser(Number(userId));
+        }
     }, [userId]);
 
     function getUser(userId: number) {
-        if (userId) {
-            dispatch(getUserById(userId));
-        }
+        dispatch(getUserById(userId));
+    }
+
+    function handleFormElementChanged(name: string, value: string) {
+        setUserInput((preUserInput) => {
+            return {
+               ...preUserInput,
+                [name]: value
+            }
+        });
     }
 
     const pageTitle = () => {

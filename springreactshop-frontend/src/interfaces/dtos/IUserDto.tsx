@@ -10,3 +10,13 @@ export interface IUserDto {
     enabled: boolean,
     roles: IRoleDto[],
 }
+
+export interface IUserDtoWithoutId {
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    photos: string,
+    enabled: boolean,
+    roles: IRoleDto[],
+}
