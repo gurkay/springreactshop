@@ -13,12 +13,14 @@ const UserService = {
         return response.data;
     },
 
-    createUser: async (user: IUserDtoWithoutId) => {
+    createUser: async (user: IUserDto) => {
         const response = await HttpService.getAxiosClient().post(`admin/user`, user);
         return response.data;
     },
 
     updateUser: async (userId: number, user: IUserDto) => {
+        console.log(userId);
+        console.log(user);
         const response = await HttpService.getAxiosClient().put(`admin/user/${userId}`, user);
         return response.data;
     },

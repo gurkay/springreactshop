@@ -1,7 +1,7 @@
 import { IRoleDto } from "./IRoleDto";
 
 export interface IUserDto {
-    id: number,
+    id?: number,
     email: string,
     password: string,
     firstName: string,

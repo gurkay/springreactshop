@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect } from "react";
-import { getAllUsers } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, getAllUsers } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,21 @@ const ListUsersComponent = () => {
 
     function handleNewUser() {
         navigate('/admin/newUser');
+    }
+
+    function handleEditUser(userId: number) {
+        navigate(`/admin/editUser/${userId}`);
+    }
+
+    function handleDeleteUser(userId: number) {
+        dispatch(deleteUser(userId))
+        .then((response: string) => {
+            console.log(response);
+            fetchUsers();
+            navigate('/admin/users');
+         }).catch((error: any) => {
+            console.log(error);
+         });
     }
 
     return (
@@ -65,12 +80,12 @@ const ListUsersComponent = () => {
                                     <td className="text-center">
                                         <button
                                             className="btn btn-info"
-                                            onClick={() => { }}
+                                            onClick={() => user.id !== undefined && handleEditUser(user.id)}
                                         >Edit</button>
 
                                         <button
                                             className="btn btn-danger"
-                                            onClick={() => { }}
+                                            onClick={() => user.id !== undefined && handleDeleteUser(user.id)}
                                             style={{ marginLeft: '10px' }}
                                         >Delete
                                         </button>
