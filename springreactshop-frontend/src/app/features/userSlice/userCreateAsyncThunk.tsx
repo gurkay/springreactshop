@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import UserService from "../../../services/user/UserService";
+import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
 export const getAllUsers: any = createAsyncThunk('getAllUsers', async () => {
   const response = await UserService.getAllUsers();
@@ -16,8 +17,9 @@ export const createUser: any = createAsyncThunk('createUser', async (user: any) 
   return Promise.resolve(response);
 });
 
-export const updateUser: any = createAsyncThunk('updateUser', async (user: any) => {
-  const response = await UserService.updateUser(user.userId, user);
+export const updateUser: any = createAsyncThunk('updateUser', async (payload: { userId: number, userDto: IUserDto }) => {
+  const { userId, userDto } = payload;
+  const response = await UserService.updateUser(userId, userDto);
   return Promise.resolve(response);
 });
 

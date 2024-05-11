@@ -19,7 +19,6 @@ const UserService = {
     },
 
     updateUser: async (userId: number, user: IUserDto) => {
-        console.log(userId);
         console.log(user);
         const response = await HttpService.getAxiosClient().put(`admin/user/${userId}`, user);
         return response.data;

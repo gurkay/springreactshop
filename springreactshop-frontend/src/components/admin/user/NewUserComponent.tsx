@@ -27,13 +27,17 @@ const NewUserComponent = () => {
     }
 
     function handleFormElementChanged(name: string, value: string) {
+        console.log(name);
+        console.log(value);
         setUserInput((preUserInput) => {
             return {
                ...preUserInput,
                 [name]: value
             }
         });
-        dispatch(setUser({...selectorUser.user, [name]: value}));;
+        console.log(userInput);
+        dispatch(setUser({...selectorUser.user, [name]: value}));
+        console.log(selectorUser.user);
     }
 
     function addOrEditUser(event: any) {
