@@ -1,4 +1,4 @@
-import { IUserDto, IUserDtoWithoutId } from "../../interfaces/dtos/IUserDto";
+import { IUserDto } from "../../interfaces/dtos/IUserDto";
 import HttpService from "../HttpService";
 
 const UserService = {
@@ -27,7 +27,7 @@ const UserService = {
     deleteUser: async (userId: number) => {
         const response = await HttpService.getAxiosClient().delete(`admin/user/${userId}`);
         return response.data;
-    }
+    },
 }
 
 export default UserService;

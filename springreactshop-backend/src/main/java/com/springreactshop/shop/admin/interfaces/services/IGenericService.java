@@ -3,9 +3,9 @@ package com.springreactshop.shop.admin.interfaces.services;
 import java.util.List;
 
 public interface IGenericService<TEntityDto> {
-    TEntityDto createUser(TEntityDto employeeDto);
-    TEntityDto getUserById(Long id);
-    List<TEntityDto> getAllUsers();
-    TEntityDto updateUser(Long id, TEntityDto employeeDto);
-    void deleteUser(Long id);
+    TEntityDto create(TEntityDto employeeDto);
+    TEntityDto getById(Long id);
+    List<TEntityDto> getAll();
+    TEntityDto update(Long id, TEntityDto employeeDto);
+    void delete(Long id);
 }

@@ -1,5 +1,5 @@
 export interface IRoleDto {
-    id: number,
+    id?: number,
     name: string,
     description: string,
 }

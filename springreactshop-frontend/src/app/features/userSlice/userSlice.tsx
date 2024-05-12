@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { userInitialState } from "../../initials/userInitialState";
 import { userExtraReducers } from "./userExtraReducers";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
+import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 
 export const userSlice = createSlice({
     name: "userSlice",
@@ -22,6 +23,9 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<IUserDto>) => {
             state.user = action.payload;
         },
+        setUserRoles: (state, action: PayloadAction<IUserDto>) => {
+            state.user = action.payload;
+        }
     },
     extraReducers: (builder) => {
         userExtraReducers.builderGetAllUsers(builder);

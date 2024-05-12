@@ -5,19 +5,25 @@ import { deleteUser, getAllUsers } from "../../../app/features/userSlice/userCre
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 import { useNavigate } from "react-router-dom";
+import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const selectorUser = useSelector((state: RootState) => state.userReducer);
 
+    useEffect(() => {
+        fetchUsers();
+        fetchRoles();
+    }, []);
+
     function fetchUsers() {
         dispatch(getAllUsers());
     }
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    function fetchRoles() {
+        dispatch(getAllRoles());
+    }
 
     function handleNewUser() {
         navigate('/admin/newUser');
@@ -29,13 +35,13 @@ const ListUsersComponent = () => {
 
     function handleDeleteUser(userId: number) {
         dispatch(deleteUser(userId))
-        .then((response: string) => {
-            console.log(response);
-            fetchUsers();
-            navigate('/admin/users');
-         }).catch((error: any) => {
-            console.log(error);
-         });
+            .then((response: string) => {
+                console.log(response);
+                fetchUsers();
+                navigate('/admin/users');
+            }).catch((error: any) => {
+                console.log(error);
+            });
     }
 
     return (
@@ -72,9 +78,10 @@ const ListUsersComponent = () => {
                                     <td>{user.photos}</td>
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
-                                    <td>{
-                                        user.roles.map((role: IRoleDto) => (<span key={role.id}>{role.name} </span>))
-                                    }
+                                    <td>
+                                        {
+                                            user.roles.map((role: IRoleDto) => (<span key={role.id}>{role.name} </span>))
+                                        }
                                     </td>
                                     <td>{(user.enabled) ? "true" : "false"}</td>
                                     <td className="text-center">

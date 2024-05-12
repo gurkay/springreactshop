@@ -4,20 +4,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createUser, getUserById, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import FormNewUserComponent from "../forms/FormNewUserComponent";
-import { emptyUser, emptyUserWithoutId } from "../../../constants/emptyUser";
-import { IUserDto, IUserDtoWithoutId } from "../../../interfaces/dtos/IUserDto";
+import { emptyUser } from "../../../constants/emptyUser";
+import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { clearUser, setUser } from "../../../app/features/userSlice/userSlice";
+import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 
 const NewUserComponent = () => {
     const dispatch = useDispatch<AppDispatch>();
     const selectorUser = useSelector((state: RootState) => state.userReducer);
+    const selectorRole = useSelector((state: RootState) => state.roleReducer);
+
     const navigate = useNavigate();
     const { userId } = useParams();
     const [errors, setErrors] = useState<IUserDto>(emptyUser);
-    const [userInput, setUserInput] = useState<IUserDto>(emptyUser);
 
     useEffect(() => {
-        if(userId) {
+        if (userId) {
             getUser(Number(userId));
         }
     }, [userId]);
@@ -27,43 +29,43 @@ const NewUserComponent = () => {
     }
 
     function handleFormElementChanged(name: string, value: string) {
-        console.log(name);
-        console.log(value);
-        setUserInput((preUserInput) => {
-            return {
-               ...preUserInput,
-                [name]: value
-            }
-        });
-        console.log(userInput);
-        dispatch(setUser({...selectorUser.user, [name]: value}));
-        console.log(selectorUser.user);
+        dispatch(setUser({ ...selectorUser.user, [name]: value }));
+    }
+
+    function handleFormRolesChanged(name: string, roleId: number) {
+        const role: IRoleDto | undefined = selectorRole.roles.find(r => r.id === roleId);
+        if (role) {
+            const newSelectedRoles: IRoleDto[] = selectorUser.user.roles.some(r => r.id === roleId)
+                ? selectorUser.user.roles.filter(r => r.id !== role.id)
+                : [...selectorUser.user.roles, role];
+            dispatch(setUser({...selectorUser.user, [name]: newSelectedRoles }));
+        }
     }
 
     function addOrEditUser(event: any) {
         event.preventDefault();
-        if(!validateForm()) {
+        if (!validateForm()) {
             return;
         }
 
-        if(userId) {
+        if (userId) {
             dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user }))
-            .then((response: any) => {
-                console.log(response);
-                dispatch(clearUser());
-                navigate('/admin/users');
-            }).catch((error: any) => {
-                console.log(error);
-            });
+                .then((response: any) => {
+                    console.log(response);
+                    dispatch(clearUser());
+                    navigate('/admin/users');
+                }).catch((error: any) => {
+                    console.log(error);
+                });
         } else {
             dispatch(createUser(selectorUser.user))
-            .then((response: any) => {
-                console.log(response);
-                dispatch(clearUser());
-                navigate('/admin/users');
-            }).catch((error: any) => {
-                console.log(error);
-            });
+                .then((response: any) => {
+                    console.log(response);
+                    dispatch(clearUser());
+                    navigate('/admin/users');
+                }).catch((error: any) => {
+                    console.log(error);
+                });
         }
     }
 
@@ -82,6 +84,13 @@ const NewUserComponent = () => {
             errorsCopy.lastName = '';
         } else {
             errorsCopy.lastName = 'Last name is required';
+            isValid = false;
+        }
+
+        if (selectorUser.user.password.trim()) {
+            errorsCopy.password = '';
+        } else {
+            errorsCopy.password = 'Password must be between 4 and 32 characters';
             isValid = false;
         }
 
@@ -104,8 +113,15 @@ const NewUserComponent = () => {
 
     return (
         <div className="card mt-2">
-            <h3 className="text-center">{pageTitle()}</h3>
-            <FormNewUserComponent user={selectorUser.user} errors={errors} onChange={handleFormElementChanged} onSave={addOrEditUser} />
+            <h3>{pageTitle()}</h3>
+            <FormNewUserComponent 
+                user={selectorUser.user} 
+                errors={errors} 
+                onChange={handleFormElementChanged} 
+                onSave={addOrEditUser} 
+                roles={selectorRole.roles}
+                onRolesChanged={handleFormRolesChanged}
+            />
         </div>
     );
 }
