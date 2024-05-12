@@ -8,9 +8,11 @@ interface FormNewUserComponentProps {
     onSave: (event: any) => void;
     roles: IRoleDto[];
     onRolesChanged: (name: string, roleId: number) => void;
+    onEnabledChanged: (name: string, isEnabled: boolean) => void;
+    onCancel: () => void;
 }
 
-const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesChanged }: FormNewUserComponentProps) => {
+const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesChanged, onEnabledChanged, onCancel }: FormNewUserComponentProps) => {
 
     return (
         <form className="form">
@@ -110,27 +112,40 @@ const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesCh
 
                 <div className="form-group row mt-2">
                     <label className="col-form-label col-sm-4">Roles</label>
-                    <div className="col-sm-8 text-left">
+                    <div className="col-sm-8 text-center">
                         {
                             roles.map((role: IRoleDto) => (
-                                <label className="form-check-label" key={role.id}>
+                                <label className="form-check form-check-inline" key={role.id}>
                                     <input
                                         type="checkbox"
                                         value={role.id}
                                         checked={user.roles.some(r => r.id === role.id)}
-                                        onChange={(event: any) => {onRolesChanged('roles', Number(event.target.value))}}
+                                        onChange={(event: any) => { onRolesChanged('roles', Number(event.target.value)) }}
                                     />
-                                    {role.name}: {role.description}
+                                    [{role.name}]: <small>{role.description}</small>
                                 </label>
-
                             ))
                         }
                     </div>
                 </div>
 
+                <div className="form-group row mt-2">
+                    <label className="col-form-label col-sm-4">Enabled</label>
+                    <div className="col-sm-8">
+                        <label className="form-check form-check-inline">
+                            <input
+                                type="checkbox"
+                                value={user.enabled ? 'true' : 'false'}
+                                checked={user.enabled}
+                                onChange={(event: any) => { onEnabledChanged('enabled', event.target.checked) }}
+                            />
+                        </label>
+                    </div>
+                </div>
+
                 <div className="text-center mt-2">
                     <button onClick={onSave} className="btn btn-success m-2">Save</button>
-                    <button onClick={() => { }} className="btn btn-secondary">Cancel</button>
+                    <button onClick={onCancel} className="btn btn-secondary">Cancel</button>
                 </div>
             </div>
         </form>

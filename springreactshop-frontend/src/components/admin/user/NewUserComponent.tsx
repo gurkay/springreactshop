@@ -42,6 +42,14 @@ const NewUserComponent = () => {
         }
     }
 
+    function handleFormUserEnabled(name: string, isEnabled: boolean) {
+        dispatch(setUser({...selectorUser.user, [name]: isEnabled }));
+    }
+
+    function handleFormCanselButton() {
+        navigate('/admin/users');
+    }
+
     function addOrEditUser(event: any) {
         event.preventDefault();
         if (!validateForm()) {
@@ -87,7 +95,7 @@ const NewUserComponent = () => {
             isValid = false;
         }
 
-        if (selectorUser.user.password.trim()) {
+        if (selectorUser.user.password.trim().length >= 4 && selectorUser.user.password.trim().length <= 32) {
             errorsCopy.password = '';
         } else {
             errorsCopy.password = 'Password must be between 4 and 32 characters';
@@ -121,6 +129,8 @@ const NewUserComponent = () => {
                 onSave={addOrEditUser} 
                 roles={selectorRole.roles}
                 onRolesChanged={handleFormRolesChanged}
+                onEnabledChanged={handleFormUserEnabled}
+                onCancel={handleFormCanselButton}
             />
         </div>
     );

@@ -6,6 +6,8 @@ import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 import { useNavigate } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
+import { setUser } from "../../../app/features/userSlice/userSlice";
+import { emptyUser } from "../../../constants/emptyUser";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -26,6 +28,7 @@ const ListUsersComponent = () => {
     }
 
     function handleNewUser() {
+        dispatch(setUser(emptyUser));
         navigate('/admin/newUser');
     }
 
