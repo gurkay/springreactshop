@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
 import { setUser } from "../../../app/features/userSlice/userSlice";
 import { emptyUser } from "../../../constants/emptyUser";
+import { StatusConsts } from "../../../constants/StatusConsts";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const ListUsersComponent = () => {
 
     function fetchUsers() {
         dispatch(getAllUsers());
+        console.log(selectorUser);
     }
 
     function fetchRoles() {
@@ -60,6 +62,15 @@ const ListUsersComponent = () => {
                     </div>
                 </div>
             </div>
+
+            <div>
+                {
+                    selectorUser.user.id && selectorUser.user.id > 0
+                        ? <div className="alert alert-success" role="alert">{selectorUser.user.email} Success</div> 
+                        : <></>
+                }
+            </div>
+
             <div className="container">
                 <table className="table table-striped table-bordered table-hover table-responsive">
                     <thead className="thead-dark">

@@ -14,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 
 import com.springreactshop.shop.admin.interfaces.repositories.role.IRoleRepository;
 import com.springreactshop.shop.admin.interfaces.repositories.user.IUserRepository;
-import com.springreactshop.shop.admin.services.UserServiceImpl;
 import com.springreactshop.shop.common.entities.Role;
 import com.springreactshop.shop.common.entities.User;
 

@@ -69,7 +69,6 @@ const NewUserComponent = () => {
             dispatch(createUser(selectorUser.user))
                 .then((response: any) => {
                     console.log(response);
-                    dispatch(clearUser());
                     navigate('/admin/users');
                 }).catch((error: any) => {
                     console.log(error);

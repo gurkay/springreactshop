@@ -3,6 +3,8 @@ package com.springreactshop.shop.admin.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,8 +46,8 @@ public class UserController {
     
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
-        UserDto savedUser = userService.update(userId, userDto);
-        return ResponseEntity.ok(savedUser);
+        UserDto updatedUser = userService.update(userId, userDto);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/user/{id}")

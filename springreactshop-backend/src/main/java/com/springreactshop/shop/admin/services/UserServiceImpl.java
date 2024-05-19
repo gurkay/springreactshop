@@ -4,16 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.springreactshop.shop.admin.interfaces.repositories.role.IRoleRepository;
 import com.springreactshop.shop.admin.interfaces.repositories.user.IUserRepository;
 import com.springreactshop.shop.admin.interfaces.services.user.IUserService;
-import com.springreactshop.shop.common.dtos.RoleDto;
 import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.entities.User;
 import com.springreactshop.shop.common.exception.ResourceNotFoundException;
-import com.springreactshop.shop.common.mapper.RoleMapper;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
 @Service
@@ -23,7 +21,7 @@ public class UserServiceImpl implements IUserService<UserDto> {
     private IUserRepository userRepository;
 
     @Autowired
-    private IRoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAll() {
@@ -44,6 +42,7 @@ public class UserServiceImpl implements IUserService<UserDto> {
     @Override
     public UserDto create(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
+        encodePassword(user); // crypto user password
         User savedUser = userRepository.save(user);
         return UserMapper.mapToUserDto(savedUser);
     }
@@ -70,5 +69,10 @@ public class UserServiceImpl implements IUserService<UserDto> {
                     .findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
         userRepository.delete(user);
+    }
+
+    private void encodePassword(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
     }
 }
