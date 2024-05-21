@@ -75,4 +75,9 @@ public class UserServiceImpl implements IUserService<UserDto> {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
     }
+
+    public UserDto isEmailUnique(String email) {
+        User user = userRepository.isEmailUnique(email);
+        return UserMapper.mapToUserDto(user);
+    }
 }

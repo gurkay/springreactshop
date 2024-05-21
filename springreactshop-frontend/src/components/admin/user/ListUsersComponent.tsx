@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
 import { setUser } from "../../../app/features/userSlice/userSlice";
 import { emptyUser } from "../../../constants/emptyUser";
-import { StatusConsts } from "../../../constants/StatusConsts";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -22,7 +21,6 @@ const ListUsersComponent = () => {
 
     function fetchUsers() {
         dispatch(getAllUsers());
-        console.log(selectorUser);
     }
 
     function fetchRoles() {
@@ -77,6 +75,7 @@ const ListUsersComponent = () => {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Photos</th>
+                            <th scope="col">E-mail</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Roles</th>
@@ -90,6 +89,7 @@ const ListUsersComponent = () => {
                                 <tr key={user.id}>
                                     <th scope="row">{user.id}</th>
                                     <td>{user.photos}</td>
+                                    <td>{user.email}</td>
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
                                     <td>

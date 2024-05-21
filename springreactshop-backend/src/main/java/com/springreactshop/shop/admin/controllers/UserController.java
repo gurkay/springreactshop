@@ -53,4 +53,8 @@ public class UserController {
         return ResponseEntity.ok("User id: "+ userId +" deleted successfully!");
     }
 
+    @PostMapping("/user/isEmailUnique/{email}")
+    public UserDto isEmailUnique(@PathVariable("email") String email) {
+        return userService.isEmailUnique(email);
+    }
 }

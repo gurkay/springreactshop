@@ -27,3 +27,8 @@ export const deleteUser: any = createAsyncThunk('deleteUser', async (id: number)
   const response = await UserService.deleteUser(id);
   return Promise.resolve(response);
 });
+
+export const isEmailUnique: any = createAsyncThunk('isEmailUnique', async (email: string) => {
+  const response = await UserService.isEmailUnique(email);
+  return Promise.resolve(response);
+})

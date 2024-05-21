@@ -30,6 +30,7 @@ export const userSlice = createSlice({
         userExtraReducers.builderGetAllUsers(builder);
         userExtraReducers.builderGetUserById(builder);
         userExtraReducers.builderCreateUser(builder);
+        userExtraReducers.buildIsEmailUnique(builder);
     }
 });
 

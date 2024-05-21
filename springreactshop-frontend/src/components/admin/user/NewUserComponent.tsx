@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { createUser, getUserById, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { createUser, getUserById, isEmailUnique, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import FormNewUserComponent from "../forms/FormNewUserComponent";
 import { emptyUser } from "../../../constants/emptyUser";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
@@ -66,13 +66,20 @@ const NewUserComponent = () => {
                     console.log(error);
                 });
         } else {
-            dispatch(createUser(selectorUser.user))
+            dispatch(isEmailUnique(selectorUser.user.email));
+            console.log(selectorUser.user);
+            if (selectorUser.user.email.length > 0) {
+                console.log("there is already a user with that email");
+                return;
+            } else {
+                dispatch(createUser(selectorUser.user))
                 .then((response: any) => {
                     console.log(response);
                     navigate('/admin/users');
                 }).catch((error: any) => {
                     console.log(error);
                 });
+            }
         }
     }
 

@@ -28,6 +28,11 @@ const UserService = {
         const response = await HttpService.getAxiosClient().delete(`admin/user/${userId}`);
         return response.data;
     },
+
+    isEmailUnique: async (email: string) => {
+        const response = await HttpService.getAxiosClient().post(`admin/user/isEmailUnique/${email}`);
+        return response.data;
+    },
 }
 
 export default UserService;
