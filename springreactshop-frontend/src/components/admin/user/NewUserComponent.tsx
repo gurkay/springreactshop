@@ -68,7 +68,7 @@ const NewUserComponent = () => {
         } else {
             dispatch(isEmailUnique(selectorUser.user.email));
             console.log(selectorUser.user);
-            if (selectorUser.user.email.length > 0) {
+            if (!selectorUser.isEmailUnique) {
                 console.log("there is already a user with that email");
                 return;
             } else {

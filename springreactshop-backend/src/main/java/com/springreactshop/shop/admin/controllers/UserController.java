@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/user/isEmailUnique/{email}")
-    public UserDto isEmailUnique(@PathVariable("email") String email) {
+    public boolean isEmailUnique(@PathVariable("email") String email) {
         return userService.isEmailUnique(email);
     }
 }
