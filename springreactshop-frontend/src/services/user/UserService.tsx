@@ -31,6 +31,7 @@ const UserService = {
 
     isEmailUnique: async (email: string) => {
         const response = await HttpService.getAxiosClient().post(`admin/user/isEmailUnique/${email}`);
+        console.log(response.data);
         return response.data;
     },
 }

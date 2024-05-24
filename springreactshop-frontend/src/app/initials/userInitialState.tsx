@@ -5,7 +5,7 @@ import { IUserInitialState } from "../../interfaces/IUserInitialState";
 export const userInitialState: IUserInitialState = {
     user: emptyUser,
     users: [],
-    isEmailUnique: true,
+    isEmailUnique: false,
     loading: false,
     status: StatusConsts.IDLE
 };

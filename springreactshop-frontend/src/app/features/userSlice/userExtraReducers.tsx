@@ -65,9 +65,9 @@ export const userExtraReducers = {
             state.status = StatusConsts.LOADING;
         });
 
-        builder.addCase(isEmailUnique.fulfilled, (state, action: PayloadAction<IUserDto>) => {
+        builder.addCase(isEmailUnique.fulfilled, (state, action: PayloadAction<boolean>) => {
             state.loading = false;
-            state.user = action.payload;
+            state.isEmailUnique = action.payload;
             state.status = StatusConsts.SUCCESS;
         });
 

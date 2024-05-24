@@ -8,6 +8,7 @@ import { emptyUser } from "../../../constants/emptyUser";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { clearUser, setUser } from "../../../app/features/userSlice/userSlice";
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
+import { StatusConsts } from "../../../constants/StatusConsts";
 
 const NewUserComponent = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -50,12 +51,8 @@ const NewUserComponent = () => {
         navigate('/admin/users');
     }
 
-    function addOrEditUser(event: any) {
-        event.preventDefault();
-        if (!validateForm()) {
-            return;
-        }
-
+    async function addOrEditUser(event: any) {
+        
         if (userId) {
             dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user }))
                 .then((response: any) => {
@@ -66,24 +63,25 @@ const NewUserComponent = () => {
                     console.log(error);
                 });
         } else {
-            dispatch(isEmailUnique(selectorUser.user.email));
-            console.log(selectorUser.user);
-            if (!selectorUser.isEmailUnique) {
-                console.log("there is already a user with that email");
+            
+            event.preventDefault();
+            const result = await validateForm();
+
+            if(!result) {
                 return;
-            } else {
-                dispatch(createUser(selectorUser.user))
-                .then((response: any) => {
-                    console.log(response);
-                    navigate('/admin/users');
-                }).catch((error: any) => {
-                    console.log(error);
-                });
             }
+
+            dispatch(createUser(selectorUser.user))
+            .then((response: any) => {
+                console.log(response);
+                navigate('/admin/users');
+            }).catch((error: any) => {
+                console.log(error);
+            });
         }
     }
 
-    const validateForm = () => {
+    async function validateForm() {
         let isValid = true;
         const errorsCopy = { ...errors };
 
@@ -117,7 +115,19 @@ const NewUserComponent = () => {
             errorsCopy.email = '';
         }
 
+        await dispatch(isEmailUnique(selectorUser.user.email)).then((response: any) => {
+            if (response.payload) {
+                errorsCopy.email = 'there is already a user with that email';
+                isValid = false;
+            } else {
+                errorsCopy.email = '';
+            }
+        }).catch((error: any) => {
+            console.log(error);
+        });
+
         setErrors(errorsCopy);
+
         return isValid;
     }
 

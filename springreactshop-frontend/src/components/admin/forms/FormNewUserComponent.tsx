@@ -119,7 +119,7 @@ const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesCh
                                     <input
                                         type="checkbox"
                                         value={role.id}
-                                        checked={user.roles.some(r => r.id === role.id)}
+                                        checked={user?.roles?.some(r => r.id === role.id)}
                                         onChange={(event: any) => { onRolesChanged('roles', Number(event.target.value)) }}
                                     />
                                     [{role.name}]: <small>{role.description}</small>

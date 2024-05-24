@@ -78,6 +78,6 @@ public class UserServiceImpl implements IUserService<UserDto> {
 
     public boolean isEmailUnique(String email) {
         User user = userRepository.isEmailUnique(email);
-        return user == null ? true : false;
+        return user == null ? false : true;
     }
 }
