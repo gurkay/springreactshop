@@ -8,7 +8,6 @@ import { emptyUser } from "../../../constants/emptyUser";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { clearUser, setUser } from "../../../app/features/userSlice/userSlice";
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
-import { StatusConsts } from "../../../constants/StatusConsts";
 
 const NewUserComponent = () => {
     const dispatch = useDispatch<AppDispatch>();

@@ -53,10 +53,7 @@ const ListUsersComponent = () => {
                 <div className="row">
                     <h4>Manage Users</h4>
                     <div className="col">
-                        <button className="btn btn-primary" onClick={handleNewUser}>New User</button>
-                    </div>
-                    <div className="col">
-                        <button className="btn btn-primary" onClick={handleNewUser}>New User</button>
+                        <button className="btn btn-primary" onClick={handleNewUser}>Create New User</button>
                     </div>
                 </div>
             </div>
@@ -88,7 +85,7 @@ const ListUsersComponent = () => {
                             selectorUser.users && selectorUser.users.map((user: IUserDto) => (
                                 <tr key={user.id}>
                                     <th scope="row">{user.id}</th>
-                                    <td>{user.photos}</td>
+                                    <td><span className="bi bi-image"></span></td>
                                     <td>{user.email}</td>
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
@@ -97,18 +94,25 @@ const ListUsersComponent = () => {
                                             user.roles.map((role: IRoleDto) => (<span key={role.id}>{role.name} </span>))
                                         }
                                     </td>
-                                    <td>{(user.enabled) ? "true" : "false"}</td>
+                                    <td>
+                                        <button
+                                            className={(user.enabled) ? "btn btn-outline-success" : "btn btn-outline-danger"}
+                                            onClick={() => user.id !== undefined && handleEditUser(user.id)}
+                                        ><i className={(user.enabled) ? "bi bi-check-circle" : "bi bi-x-circle"}></i></button>
+                                    </td>
                                     <td className="text-center">
                                         <button
                                             className="btn btn-info"
+                                            title="Edit user"
                                             onClick={() => user.id !== undefined && handleEditUser(user.id)}
-                                        >Edit</button>
+                                        ><i className="bi bi-pencil-square"></i></button>
 
                                         <button
                                             className="btn btn-danger"
+                                            title="Delete user"
                                             onClick={() => user.id !== undefined && handleDeleteUser(user.id)}
                                             style={{ marginLeft: '10px' }}
-                                        >Delete
+                                        ><i className="bi bi-trash"></i>
                                         </button>
                                     </td>
                                 </tr>

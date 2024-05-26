@@ -12,6 +12,7 @@ import com.springreactshop.shop.admin.interfaces.services.user.IUserService;
 import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.entities.User;
 import com.springreactshop.shop.common.exception.ResourceNotFoundException;
+import com.springreactshop.shop.common.exception.UserNotFoundException;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
 @Service
@@ -48,10 +49,10 @@ public class UserServiceImpl implements IUserService<UserDto> {
     }
 
     @Override
-    public UserDto update(Long id, UserDto userDto) {
+    public UserDto update(Long id, UserDto userDto) throws UserNotFoundException {
         User user = userRepository
                     .findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
+                    .orElseThrow(() -> new UserNotFoundException("User not found for id: " + id));
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setFirstName(userDto.getFirstName());

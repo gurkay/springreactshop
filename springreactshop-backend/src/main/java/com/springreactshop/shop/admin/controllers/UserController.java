@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springreactshop.shop.admin.services.UserServiceImpl;
 import com.springreactshop.shop.common.dtos.UserDto;
+import com.springreactshop.shop.common.exception.UserNotFoundException;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class UserController {
     }
     
     @PutMapping("/user/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
         UserDto updatedUser = userService.update(userId, userDto);
         return ResponseEntity.ok(updatedUser);
     }
