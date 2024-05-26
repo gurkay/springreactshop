@@ -56,8 +56,8 @@ const NewUserComponent = () => {
             dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user }))
                 .then((response: any) => {
                     console.log(response);
-                    dispatch(clearUser());
                     navigate('/admin/users');
+                    dispatch(clearUser());
                 }).catch((error: any) => {
                     console.log(error);
                 });

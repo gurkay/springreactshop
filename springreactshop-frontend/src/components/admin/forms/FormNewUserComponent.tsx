@@ -13,7 +13,6 @@ interface FormNewUserComponentProps {
 }
 
 const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesChanged, onEnabledChanged, onCancel }: FormNewUserComponentProps) => {
-
     return (
         <form className="form">
             <div className="border border-secondary p-2 rounded">
@@ -31,6 +30,7 @@ const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesCh
                             required
                             minLength={8}
                             maxLength={128}
+                            disabled={user.id === 0 ? false : true}
                         />
                         {
                             errors.email &&
