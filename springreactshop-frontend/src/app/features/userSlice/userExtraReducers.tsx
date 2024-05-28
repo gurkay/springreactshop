@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, getAllUsers, getUserById, isEmailUnique } from "./userCreateAsyncThunk";
+import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
@@ -76,4 +76,22 @@ export const userExtraReducers = {
             state.status = StatusConsts.ERROR;
         });
     },
+
+    buildDeleteUser: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(deleteUser.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+
+        builder.addCase(deleteUser.fulfilled, (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.status = StatusConsts.SUCCESS;
+            state.result = action.payload;
+        });
+
+        builder.addCase(deleteUser.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    }
 }

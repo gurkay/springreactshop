@@ -9,5 +9,5 @@ public interface IGenericService<TEntityDto> {
     TEntityDto getById(Long id);
     List<TEntityDto> getAll();
     TEntityDto update(Long id, TEntityDto employeeDto) throws UserNotFoundException;
-    void delete(Long id);
+    void delete(Long id) throws UserNotFoundException;
 }

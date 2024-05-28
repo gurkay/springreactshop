@@ -65,10 +65,10 @@ public class UserServiceImpl implements IUserService<UserDto> {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws UserNotFoundException {
         User user = userRepository
                     .findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
+                    .orElseThrow(() -> new UserNotFoundException("User not found for id: " + id));
         userRepository.delete(user);
     }
 

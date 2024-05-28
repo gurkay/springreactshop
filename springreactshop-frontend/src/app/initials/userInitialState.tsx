@@ -7,5 +7,6 @@ export const userInitialState: IUserInitialState = {
     users: [],
     isEmailUnique: false,
     loading: false,
-    status: StatusConsts.IDLE
+    status: StatusConsts.IDLE,
+    result: ""
 };
