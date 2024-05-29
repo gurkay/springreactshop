@@ -59,4 +59,10 @@ public class UserController {
     public boolean isEmailUnique(@PathVariable("email") String email) {
         return userService.isEmailUnique(email);
     }
+
+    @GetMapping("/user/{id}/enabled/{status}")
+    public ResponseEntity<String> updateUserEnabledStatus(@PathVariable("id") Long userId, @PathVariable("status") boolean enabled) {
+        userService.updateUserEnabledStatus(userId, enabled);
+        return ResponseEntity.ok("User id: " + userId + " status updated " + enabled);
+    }
 }

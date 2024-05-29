@@ -32,3 +32,9 @@ export const isEmailUnique: any = createAsyncThunk('isEmailUnique', async (email
   const response = await UserService.isEmailUnique(email);
   return Promise.resolve(response);
 })
+
+export const updateUserEnabledStatus: any = createAsyncThunk('updateUserEnabledStatus', async (payload: { userId: number, enabled: boolean }) => {
+  const { userId, enabled } = payload;
+  const response = await UserService.updateUserEnabledStatus(userId, enabled);
+  return Promise.resolve(response);
+})

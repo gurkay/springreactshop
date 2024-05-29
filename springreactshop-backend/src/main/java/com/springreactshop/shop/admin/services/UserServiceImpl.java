@@ -15,7 +15,10 @@ import com.springreactshop.shop.common.exception.ResourceNotFoundException;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserServiceImpl implements IUserService<UserDto> {
 
     @Autowired
@@ -80,5 +83,9 @@ public class UserServiceImpl implements IUserService<UserDto> {
     public boolean isEmailUnique(String email) {
         User user = userRepository.isEmailUnique(email);
         return user == null ? false : true;
+    }
+
+    public void updateUserEnabledStatus(Long userId, boolean enabled) {
+        userRepository.updateUserEnabledStatus(userId, enabled);
     }
 }

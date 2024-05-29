@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique } from "./userCreateAsyncThunk";
+import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique, updateUser, updateUserEnabledStatus } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
@@ -51,9 +51,29 @@ export const userExtraReducers = {
             state.loading = false;
             state.user = action.payload;
             state.status = StatusConsts.SUCCESS;
+            state.responseMessage = action.payload.email + " user successfully!";
         });
     
         builder.addCase(createUser.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    },
+
+    builderUpdateUser: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(updateUser.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+    
+        builder.addCase(updateUser.fulfilled, (state, action: PayloadAction<IUserDto>) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.status = StatusConsts.SUCCESS;
+            state.responseMessage = action.payload.email + " user successfully!";
+        });
+    
+        builder.addCase(updateUser.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });
@@ -86,12 +106,12 @@ export const userExtraReducers = {
         builder.addCase(deleteUser.fulfilled, (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.status = StatusConsts.SUCCESS;
-            state.result = action.payload;
+            state.responseMessage = action.payload;
         });
 
         builder.addCase(deleteUser.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });
-    }
+    },
 }

@@ -6,9 +6,10 @@ import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
 interface IProps {
     handleEditUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
+    handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
 }
 
-const ListUsersTable = ({ handleEditUser, setSelectedUser }: IProps) => {
+const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const selectorUser = useSelector((state: RootState) => state.userReducer);
 
@@ -44,7 +45,7 @@ const ListUsersTable = ({ handleEditUser, setSelectedUser }: IProps) => {
                                 <td>
                                     <button
                                         className={(user.enabled) ? "btn btn-outline-success" : "btn btn-outline-danger"}
-                                        onClick={() => { }}
+                                        onClick={() => { user.id !== undefined && handleUpdateUserEnabledStatus(user.id,!user.enabled) }}
                                     ><i className={(user.enabled) ? "bi bi-check-circle" : "bi bi-x-circle"}></i></button>
                                 </td>
                                 <td className="text-center">

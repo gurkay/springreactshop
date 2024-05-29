@@ -19,11 +19,14 @@ export const userSlice = createSlice({
         clearStatus: (state) => {
             state.status = userInitialState.status;
         },
+        clearResponseMessage: (state) => {
+            state.responseMessage = '';
+        },
         setUser: (state, action: PayloadAction<IUserDto>) => {
             state.user = action.payload;
         },
-        setUserRoles: (state, action: PayloadAction<IUserDto>) => {
-            state.user = action.payload;
+        setResponseMessage: (state, action: PayloadAction<string>) => {
+            state.responseMessage = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -40,5 +43,6 @@ export const {
     clearLoading,
     clearStatus,
     setUser,
+    setResponseMessage
 } = userSlice.actions;
 export default userSlice.reducer;

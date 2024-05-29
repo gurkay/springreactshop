@@ -112,4 +112,16 @@ public class IUserRepositoryTests {
         User user = userRepository.findById(Long.valueOf(2)).get();
         userRepository.deleteById(user.getId());
     }
+
+    @Test
+    public void testDisableUser() {
+        Long userId = Long.valueOf(34);
+        userRepository.updateUserEnabledStatus(userId, false);  
+    }
+
+    @Test
+    public void testEnabledUser() {
+        Long userId = Long.valueOf(34);
+        userRepository.updateUserEnabledStatus(userId, true);
+    }
 }

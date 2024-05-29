@@ -8,5 +8,5 @@ export const userInitialState: IUserInitialState = {
     isEmailUnique: false,
     loading: false,
     status: StatusConsts.IDLE,
-    result: ""
+    responseMessage: ""
 };

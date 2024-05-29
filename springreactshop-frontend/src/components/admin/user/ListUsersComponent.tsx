@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUsers } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, getAllUsers, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { useNavigate } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
-import { setUser } from "../../../app/features/userSlice/userSlice";
+import { setResponseMessage, setUser } from "../../../app/features/userSlice/userSlice";
 import { emptyUser } from "../../../constants/emptyUser";
 import DeleteUserModal from "../../modals/DeleteUserModal";
 import ListUsersTable from "./utility/ListUsersTable";
@@ -40,6 +40,16 @@ const ListUsersComponent = () => {
         navigate(`/admin/editUser/${userId}`);
     }
 
+    function handleUpdateUserEnabledStatus(userId: number, enabled: boolean) {
+        dispatch(updateUserEnabledStatus({ userId: Number(userId), enabled: enabled })).then((response: any) => {
+            dispatch(setResponseMessage(response.payload));
+            fetchUsers();
+            navigate('/admin/users');
+        }).catch((error: any) => {
+            console.log(error);
+        });
+    }
+
     function handleShowDeleteModal() {
         setShowDeleteModal(!showDeleteModal);
     }
@@ -67,15 +77,11 @@ const ListUsersComponent = () => {
                 </div>
             </div>
 
-            <div>
-                {
-                    selectorUser.user.id && selectorUser.user.id > 0
-                        ? <div className="alert alert-success" role="alert">{selectorUser.user.email} Success</div>
-                        : <></>
-                }
-            </div>
+            {
+                selectorUser.responseMessage && <div className="alert alert-success" role="alert">{selectorUser.responseMessage}</div>
+            }
 
-            <ListUsersTable handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} />
+            <ListUsersTable handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
 
             {
                 showDeleteModal || showDeleteModal !== undefined && <DeleteUserModal selectedUser={selectedUser} handleDeleteUser={handleDeleteUser} />

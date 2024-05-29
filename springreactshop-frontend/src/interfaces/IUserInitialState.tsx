@@ -7,5 +7,5 @@ export interface IUserInitialState {
     isEmailUnique: boolean;
     loading: boolean;
     status: string;
-    result: string;
+    responseMessage: string;
 }

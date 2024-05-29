@@ -34,6 +34,11 @@ const UserService = {
         console.log(response.data);
         return response.data;
     },
+
+    updateUserEnabledStatus: async (userId: number, enabled: boolean) => {
+        const response = await HttpService.getAxiosClient().get(`admin/user/${userId}/enabled/${enabled}`);
+        return response.data;
+    }
 }
 
 export default UserService;
