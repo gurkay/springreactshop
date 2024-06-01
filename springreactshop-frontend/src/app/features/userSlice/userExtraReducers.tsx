@@ -67,6 +67,7 @@ export const userExtraReducers = {
         });
     
         builder.addCase(updateUser.fulfilled, (state, action: PayloadAction<IUserDto>) => {
+            console.log(action.payload.email);
             state.loading = false;
             state.user = action.payload;
             state.status = StatusConsts.SUCCESS;

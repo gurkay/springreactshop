@@ -8,7 +8,6 @@ interface IProps {
 
 export const NewUserValidateForm = async({ errors, user }: IProps) => {
 
-
     let isValid = true;
     const errorsCopy = { ...errors };
 

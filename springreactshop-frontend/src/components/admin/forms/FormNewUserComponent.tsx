@@ -1,6 +1,8 @@
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
+import defaultImage from "../../../../../springreactshop-backend/src/main/resources/static/images/default-user.png";
+
 interface FormNewUserComponentProps {
     user: IUserDto;
     onChange: (name: string, value: string) => void;
@@ -10,11 +12,25 @@ interface FormNewUserComponentProps {
     onRolesChanged: (name: string, roleId: number) => void;
     onEnabledChanged: (name: string, isEnabled: boolean) => void;
     onCancel: () => void;
+    thumbnail?: string;
+    onImageChanged: (event: any) => void;
 }
 
-const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesChanged, onEnabledChanged, onCancel }: FormNewUserComponentProps) => {
+const FormNewUserComponent = ({
+    user, 
+    onChange, 
+    errors, 
+    onSave, 
+    roles, 
+    onRolesChanged, 
+    onEnabledChanged, 
+    onCancel, 
+    thumbnail, 
+    onImageChanged 
+}: FormNewUserComponentProps) => {
+
     return (
-        <form className="form">
+        <form className="form" encType="multipart/form-data">
             <div className="border border-secondary p-2 rounded">
 
                 <div className="form-group row mt-2">
@@ -139,6 +155,22 @@ const FormNewUserComponent = ({ user, onChange, errors, onSave, roles, onRolesCh
                                 checked={user.enabled}
                                 onChange={(event: any) => { onEnabledChanged('enabled', event.target.checked) }}
                             />
+                        </label>
+                    </div>
+                </div>
+
+                <div className="form-group row mt-2">
+                    <label className="col-form-label col-sm-4">Photos</label>
+                    <div className="col-sm-8">
+                        <label className="form-check form-check-inline">
+                            <input
+                                id="fileImage"
+                                name="image"
+                                type="file"
+                                accept="image/*"
+                                onChange={(event: any) => onImageChanged(event)}
+                            />
+                            <img className="img-fluid" id="thumbnail" src={thumbnail ? thumbnail : defaultImage} alt="image preview" />
                         </label>
                     </div>
                 </div>

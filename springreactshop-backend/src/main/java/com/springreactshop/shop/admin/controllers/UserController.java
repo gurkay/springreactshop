@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springreactshop.shop.admin.services.UserServiceImpl;
 import com.springreactshop.shop.common.dtos.UserDto;
@@ -26,7 +28,7 @@ public class UserController {
     
     @Autowired
     private UserServiceImpl userService;
-
+    private MultipartFile file = null;
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
         return userService.getAll();
@@ -39,9 +41,16 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto savedUser = userService.create(userDto);
+        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
+        UserDto savedUser = userService.create(userDto);    
         return ResponseEntity.ok(savedUser);
     }
+
+    @PostMapping("/user/upload/userPhoto")
+    public void userPhoto(@RequestParam("file") MultipartFile file) {
+        this.file = file;
+    }
+    
     
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) throws UserNotFoundException {

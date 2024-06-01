@@ -34,6 +34,7 @@ export const userSlice = createSlice({
         userExtraReducers.builderGetUserById(builder);
         userExtraReducers.builderCreateUser(builder);
         userExtraReducers.buildIsEmailUnique(builder);
+        userExtraReducers.builderUpdateUser(builder);
     }
 });
 

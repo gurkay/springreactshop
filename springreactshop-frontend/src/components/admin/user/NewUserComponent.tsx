@@ -17,12 +17,26 @@ const NewUserComponent = () => {
     const navigate = useNavigate();
     const { userId } = useParams();
     const [errors, setErrors] = useState<IUserDto>(emptyUser);
+    const [thumbnail, setThumbnail] = useState<any>()
+    const [photos, setPhotos] = useState<any>();
 
     useEffect(() => {
         if (userId) {
             getUser(Number(userId));
         }
     }, [userId]);
+
+    function onImageChanged(e: any) {
+        const fileSize = e.target.files[0].size;
+
+        if (fileSize > 1048576) {
+            alert("File size is too large!");
+            return;
+        }
+
+        setPhotos(e.target.files[0]);
+        setThumbnail(URL.createObjectURL(e.target.files[0]));
+    }
 
     function getUser(userId: number) {
         dispatch(getUserById(userId));
@@ -38,12 +52,12 @@ const NewUserComponent = () => {
             const newSelectedRoles: IRoleDto[] = selectorUser.user.roles.some(r => r.id === roleId)
                 ? selectorUser.user.roles.filter(r => r.id !== role.id)
                 : [...selectorUser.user.roles, role];
-            dispatch(setUser({...selectorUser.user, [name]: newSelectedRoles }));
+            dispatch(setUser({ ...selectorUser.user, [name]: newSelectedRoles }));
         }
     }
 
     function handleFormUserEnabled(name: string, isEnabled: boolean) {
-        dispatch(setUser({...selectorUser.user, [name]: isEnabled }));
+        dispatch(setUser({ ...selectorUser.user, [name]: isEnabled }));
     }
 
     function handleFormCanselButton() {
@@ -51,6 +65,7 @@ const NewUserComponent = () => {
     }
 
     async function addOrEditUser(event: any) {
+        event.preventDefault();
         
         if (userId) {
             dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user }))
@@ -62,21 +77,18 @@ const NewUserComponent = () => {
                     console.log(error);
                 });
         } else {
-            
-            event.preventDefault();
             const result = await validateForm();
-
-            if(!result) {
+            if (!result) {
                 return;
             }
 
-            dispatch(createUser(selectorUser.user))
-            .then((response: any) => {
-                console.log(response);
-                navigate('/admin/users');
-            }).catch((error: any) => {
-                console.log(error);
-            });
+            dispatch(createUser({userDto: selectorUser.user, image: photos}))
+                .then((response: any) => {
+                    console.log(response);
+                    navigate('/admin/users');
+                }).catch((error: any) => {
+                    console.log(error);
+                });
         }
     }
 
@@ -137,15 +149,17 @@ const NewUserComponent = () => {
     return (
         <div className="card mt-2">
             <h3>{pageTitle()}</h3>
-            <FormNewUserComponent 
-                user={selectorUser.user} 
-                errors={errors} 
-                onChange={handleFormElementChanged} 
-                onSave={addOrEditUser} 
+            <FormNewUserComponent
+                user={selectorUser.user}
+                errors={errors}
+                onChange={handleFormElementChanged}
+                onSave={addOrEditUser}
                 roles={selectorRole.roles}
                 onRolesChanged={handleFormRolesChanged}
                 onEnabledChanged={handleFormUserEnabled}
                 onCancel={handleFormCanselButton}
+                thumbnail={thumbnail}
+                onImageChanged={onImageChanged}
             />
         </div>
     );

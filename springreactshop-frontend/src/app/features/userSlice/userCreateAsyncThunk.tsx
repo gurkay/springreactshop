@@ -12,8 +12,9 @@ export const getUserById: any = createAsyncThunk('getUserById', async (id: numbe
   return Promise.resolve(response);
 });
 
-export const createUser: any = createAsyncThunk('createUser', async (user: any) => {
-  const response = await UserService.createUser(user);
+export const createUser: any = createAsyncThunk('createUser', async (payload: {userDto: IUserDto, image: any}) => {
+  const { userDto, image } = payload;
+  const response = await UserService.createUser(userDto, image);
   return Promise.resolve(response);
 });
 

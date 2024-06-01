@@ -13,13 +13,15 @@ const UserService = {
         return response.data;
     },
 
-    createUser: async (user: IUserDto) => {
-        const response = await HttpService.getAxiosClient().post(`admin/user`, user);
+    createUser: async (userDto: IUserDto, image: any) => {
+        const formData = new FormData();
+        formData.append("file", image);
+        await HttpService.getAxiosClient().post(`admin/user/upload/userPhoto`, formData);
+        const response = await HttpService.getAxiosClient().post(`admin/user`, userDto);
         return response.data;
     },
 
     updateUser: async (userId: number, user: IUserDto) => {
-        console.log(user);
         const response = await HttpService.getAxiosClient().put(`admin/user/${userId}`, user);
         return response.data;
     },
@@ -31,7 +33,6 @@ const UserService = {
 
     isEmailUnique: async (email: string) => {
         const response = await HttpService.getAxiosClient().post(`admin/user/isEmailUnique/${email}`);
-        console.log(response.data);
         return response.data;
     },
 
