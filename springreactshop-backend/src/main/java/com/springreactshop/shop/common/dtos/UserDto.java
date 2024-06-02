@@ -29,4 +29,6 @@ public class UserDto {
     private boolean enabled;
 
     private Set<Role> roles;
+
+    private String photosImagePath;
 }

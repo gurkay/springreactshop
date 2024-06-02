@@ -1,9 +1,11 @@
 package com.springreactshop.shop.admin.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springreactshop.shop.admin.services.UserServiceImpl;
+import com.springreactshop.shop.admin.utilities.FileUploadUtility;
 import com.springreactshop.shop.common.dtos.UserDto;
+import com.springreactshop.shop.common.dtos.UserResponseDto;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 @CrossOrigin
 @RestController
@@ -28,7 +35,7 @@ public class UserController {
     
     @Autowired
     private UserServiceImpl userService;
-    private MultipartFile file = null;
+
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
         return userService.getAll();
@@ -40,18 +47,22 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
-        UserDto savedUser = userService.create(userDto);    
-        return ResponseEntity.ok(savedUser);
-    }
+    public ResponseEntity<UserResponseDto> createUser(@RequestParam("userDto") String userDtoJson, @RequestParam("file") MultipartFile file) throws IOException {
+        UserDto userDto = new ObjectMapper().readValue(userDtoJson, UserDto.class);
+        UserDto savedUser = null;
+        if (!file.isEmpty()) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            userDto.setPhotos(fileName);
+            savedUser = userService.create(userDto);
+            String uploadDir = "springreactshop-frontend/public/images/user-photos" + "/" + savedUser.getId();
+            FileUploadUtility.saveFile(uploadDir, fileName, file);
+        } else {
+            savedUser = userService.create(userDto);
+        }
 
-    @PostMapping("/user/upload/userPhoto")
-    public void userPhoto(@RequestParam("file") MultipartFile file) {
-        this.file = file;
+        return ResponseEntity.ok(new UserResponseDto(savedUser, "User created successfully"));
     }
-    
-    
+       
     @PutMapping("/user/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
         UserDto updatedUser = userService.update(userId, userDto);

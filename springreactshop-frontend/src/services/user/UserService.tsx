@@ -14,10 +14,9 @@ const UserService = {
     },
 
     createUser: async (userDto: IUserDto, image: any) => {
-        const formData = new FormData();
-        formData.append("file", image);
-        await HttpService.getAxiosClient().post(`admin/user/upload/userPhoto`, formData);
-        const response = await HttpService.getAxiosClient().post(`admin/user`, userDto);
+        const formData = setFormData(userDto, image);
+        const response = await HttpService.getAxiosClient().post(`admin/user`, formData);
+        console.log(response);
         return response.data;
     },
 
@@ -43,3 +42,10 @@ const UserService = {
 }
 
 export default UserService;
+
+function setFormData(userDto: IUserDto, image: any) {
+    const formData = new FormData();
+    formData.append("userDto", JSON.stringify(userDto));
+    formData.append("file", image);
+    return formData;
+}

@@ -23,6 +23,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((auth) -> auth
             .requestMatchers("/api/v1/admin/**").permitAll()
+            .requestMatchers("/**").permitAll()
             .anyRequest().authenticated());
 
 

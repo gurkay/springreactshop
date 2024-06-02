@@ -33,7 +33,15 @@ const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabl
                         selectorUser.users && selectorUser.users.map((user: IUserDto) => (
                             <tr key={user.id}>
                                 <th scope="row">{user.id}</th>
-                                <td><span className="bi bi-image"></span></td>
+                                <td> 
+                                    {
+                                        user.photos === null && <img src={user.photosImagePath} alt="User" />
+                                    }
+                                    {
+                                        user.photos && <img src={user.photosImagePath} alt="User" />
+                                    }
+                                    
+                                </td>
                                 <td>{user.email}</td>
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>

@@ -1,8 +1,9 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique, updateUser, updateUserEnabledStatus } from "./userCreateAsyncThunk";
+import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique, updateUser } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
+import { IUserResponseDto } from "../../../interfaces/dtos/IUserResponseDto";
 
 export const userExtraReducers = {
     builderGetAllUsers: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
@@ -47,11 +48,11 @@ export const userExtraReducers = {
             state.status = StatusConsts.LOADING;
         });
     
-        builder.addCase(createUser.fulfilled, (state, action: PayloadAction<IUserDto>) => {
+        builder.addCase(createUser.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
             state.loading = false;
-            state.user = action.payload;
+            state.user = action.payload.userDto!;
             state.status = StatusConsts.SUCCESS;
-            state.responseMessage = action.payload.email + " user successfully!";
+            state.responseMessage = action.payload.userDto!.email + action.payload.message;
         });
     
         builder.addCase(createUser.rejected, (state) => {

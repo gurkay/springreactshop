@@ -30,7 +30,7 @@ const FormNewUserComponent = ({
 }: FormNewUserComponentProps) => {
 
     return (
-        <form className="form" encType="multipart/form-data">
+        <form className="form" encType="multipart/form-data" action="admin/user/upload/userPhoto" method="post">
             <div className="border border-secondary p-2 rounded">
 
                 <div className="form-group row mt-2">
@@ -176,7 +176,7 @@ const FormNewUserComponent = ({
                 </div>
 
                 <div className="text-center mt-2">
-                    <button onClick={onSave} className="btn btn-success m-2">Save</button>
+                    <button type="submit" onClick={onSave} className="btn btn-success m-2">Save</button>
                     <button onClick={onCancel} className="btn btn-secondary">Cancel</button>
                 </div>
             </div>

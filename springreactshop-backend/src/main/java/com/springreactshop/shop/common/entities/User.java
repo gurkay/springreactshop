@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -74,5 +75,13 @@ public class User {
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", enabled=" + enabled + ", roles=" + roles + "]";
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if(this.id == null || this.photos == null) {
+            return "/images/default-user.png";
+        }
+        return "/images/user-photos/" + this.id + "/" + this.photos;
     }
 }

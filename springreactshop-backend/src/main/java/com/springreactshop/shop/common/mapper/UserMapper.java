@@ -18,7 +18,8 @@ public class UserMapper {
             user.getLastName(),
             user.getPhotos(),
             user.isEnabled(),
-            user.getRoles()
+            user.getRoles(),
+            user.getPhotosImagePath()
         );
     }
 
