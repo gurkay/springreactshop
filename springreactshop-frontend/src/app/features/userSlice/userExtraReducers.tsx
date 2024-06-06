@@ -67,12 +67,11 @@ export const userExtraReducers = {
             state.status = StatusConsts.LOADING;
         });
     
-        builder.addCase(updateUser.fulfilled, (state, action: PayloadAction<IUserDto>) => {
-            console.log(action.payload.email);
+        builder.addCase(updateUser.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
             state.loading = false;
-            state.user = action.payload;
+            state.user = action.payload.userDto!;
             state.status = StatusConsts.SUCCESS;
-            state.responseMessage = action.payload.email + " user successfully!";
+            state.responseMessage = action.payload.userDto!.email + action.payload.message;
         });
     
         builder.addCase(updateUser.rejected, (state) => {

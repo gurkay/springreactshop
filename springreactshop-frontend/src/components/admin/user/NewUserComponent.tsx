@@ -68,7 +68,8 @@ const NewUserComponent = () => {
         event.preventDefault();
         
         if (userId) {
-            dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user }))
+            console.log(photos);
+            dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user, image: photos }))
                 .then((response: any) => {
                     console.log(response);
                     navigate('/admin/users');
@@ -96,30 +97,30 @@ const NewUserComponent = () => {
         let isValid = true;
         const errorsCopy = { ...errors };
 
-        if (selectorUser.user.firstName.trim()) {
+        if (selectorUser.user.firstName?.trim()) {
             errorsCopy.firstName = '';
         } else {
-            errors.firstName = 'First name is required';
+            errorsCopy.firstName = 'First name is required';
             isValid = false;
         }
 
-        if (selectorUser.user.lastName.trim()) {
+        if (selectorUser.user.lastName?.trim()) {
             errorsCopy.lastName = '';
         } else {
             errorsCopy.lastName = 'Last name is required';
             isValid = false;
         }
 
-        if (selectorUser.user.password.trim().length >= 4 && selectorUser.user.password.trim().length <= 32) {
+        if (selectorUser.user.password?.trim().length >= 4 && selectorUser.user.password?.trim().length <= 32) {
             errorsCopy.password = '';
         } else {
             errorsCopy.password = 'Password must be between 4 and 32 characters';
             isValid = false;
         }
 
-        if (!selectorUser.user.email.includes("@") ||
-            !selectorUser.user.email.includes(".") ||
-            selectorUser.user.email.trim().length < 5) {
+        if (!selectorUser.user.email?.includes("@") ||
+            !selectorUser.user.email?.includes(".") ||
+            selectorUser.user.email?.trim().length < 5) {
             errorsCopy.email = 'Invalid email';
             isValid = false;
         } else {

@@ -4,7 +4,7 @@ import { IUserDto } from "../../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
 
 interface IProps {
-    handleEditUser: (userId: number) => void;
+    handleEditwdUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
 }
@@ -38,9 +38,8 @@ const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabl
                                         user.photos === null && <img src={user.photosImagePath} alt="User" />
                                     }
                                     {
-                                        user.photos && <img src={user.photosImagePath} alt="User" />
+                                        user.photos && <img src={user.photosImagePath} alt="User" style={{ width: "100px" }} />
                                     }
-                                    
                                 </td>
                                 <td>{user.email}</td>
                                 <td>{user.firstName}</td>
@@ -53,7 +52,7 @@ const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabl
                                 <td>
                                     <button
                                         className={(user.enabled) ? "btn btn-outline-success" : "btn btn-outline-danger"}
-                                        onClick={() => { user.id !== undefined && handleUpdateUserEnabledStatus(user.id,!user.enabled) }}
+                                        onClick={() => { user.id !== undefined && handleUpdateUserEnabledStatus(user.id, !user.enabled) }}
                                     ><i className={(user.enabled) ? "bi bi-check-circle" : "bi bi-x-circle"}></i></button>
                                 </td>
                                 <td className="text-center">

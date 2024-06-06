@@ -30,4 +30,18 @@ public class FileUploadUtility {
             throw new IOException("Error occurred while uploading file: " + fileName, e);
         }
     }
+
+    public static void deleteFile(String uploadDir) throws IOException {
+        Path filePath = Paths.get(uploadDir);
+        Files.list(filePath).forEach(file -> {
+            if(!Files.isDirectory(file)){
+                try {
+                    Files.delete(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Files.deleteIfExists(filePath);
+    }
 }

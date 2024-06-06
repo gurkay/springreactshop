@@ -24,7 +24,6 @@ import com.springreactshop.shop.common.exception.UserNotFoundException;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -57,6 +56,7 @@ public class UserController {
             String uploadDir = "springreactshop-frontend/public/images/user-photos" + "/" + savedUser.getId();
             FileUploadUtility.saveFile(uploadDir, fileName, file);
         } else {
+            if(userDto.getPhotos().isEmpty()) userDto.setPhotos(null);
             savedUser = userService.create(userDto);
         }
 
@@ -64,10 +64,24 @@ public class UserController {
     }
        
     @PutMapping("/user/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
-        UserDto updatedUser = userService.update(userId, userDto);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") Long userId, @RequestParam("userDto") String userDtoJson, @RequestParam("file") MultipartFile file) throws UserNotFoundException, IOException {
+        UserDto userDto = new ObjectMapper().readValue(userDtoJson, UserDto.class);
+        UserDto updateUser = null;
+        if (!file.isEmpty()) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            userDto.setPhotos(fileName);
+            updateUser = userService.update(userId, userDto);
+            String uploadDir = "springreactshop-frontend/public/images/user-photos" + "/" + userId;
+
+            FileUploadUtility.deleteFile(uploadDir);
+            FileUploadUtility.saveFile(uploadDir, fileName, file);
+        } else {
+            updateUser = userService.update(userId, userDto);
+        }
+        return ResponseEntity.ok(new UserResponseDto(updateUser, "User update successfully"));
     }
+        
+    
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId) throws UserNotFoundException {

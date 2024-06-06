@@ -18,9 +18,9 @@ export const createUser: any = createAsyncThunk('createUser', async (payload: {u
   return Promise.resolve(response);
 });
 
-export const updateUser: any = createAsyncThunk('updateUser', async (payload: { userId: number, userDto: IUserDto }) => {
-  const { userId, userDto } = payload;
-  const response = await UserService.updateUser(userId, userDto);
+export const updateUser: any = createAsyncThunk('updateUser', async (payload: { userId: number, userDto: IUserDto, image: File }) => {
+  const { userId, userDto, image } = payload;
+  const response = await UserService.updateUser(userId, userDto, image);
   return Promise.resolve(response);
 });
 

@@ -20,8 +20,9 @@ const UserService = {
         return response.data;
     },
 
-    updateUser: async (userId: number, user: IUserDto) => {
-        const response = await HttpService.getAxiosClient().put(`admin/user/${userId}`, user);
+    updateUser: async (userId: number, userDto: IUserDto, image: File) => {
+        const formData = setFormData(userDto, image);
+        const response = await HttpService.getAxiosClient().put(`admin/user/${userId}`, formData);
         return response.data;
     },
 

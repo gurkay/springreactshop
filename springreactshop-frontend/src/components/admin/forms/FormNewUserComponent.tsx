@@ -1,8 +1,6 @@
 import { IRoleDto } from "../../../interfaces/dtos/IRoleDto";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 
-import defaultImage from "../../../../../springreactshop-backend/src/main/resources/static/images/default-user.png";
-
 interface FormNewUserComponentProps {
     user: IUserDto;
     onChange: (name: string, value: string) => void;
@@ -170,7 +168,7 @@ const FormNewUserComponent = ({
                                 accept="image/*"
                                 onChange={(event: any) => onImageChanged(event)}
                             />
-                            <img className="img-fluid" id="thumbnail" src={thumbnail ? thumbnail : defaultImage} alt="image preview" />
+                            <img className="img-fluid" id="thumbnail" src={thumbnail ? thumbnail : user.photosImagePath} alt="image preview" />
                         </label>
                     </div>
                 </div>
