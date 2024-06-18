@@ -26,7 +26,6 @@ const FormNewUserComponent = ({
     thumbnail, 
     onImageChanged 
 }: FormNewUserComponentProps) => {
-
     return (
         <form className="form" encType="multipart/form-data" action="admin/user/upload/userPhoto" method="post">
             <div className="border border-secondary p-2 rounded">
@@ -168,7 +167,13 @@ const FormNewUserComponent = ({
                                 accept="image/*"
                                 onChange={(event: any) => onImageChanged(event)}
                             />
-                            <img className="img-fluid" id="thumbnail" src={thumbnail ? thumbnail : user.photosImagePath} alt="image preview" />
+                            <img 
+                                className="img-fluid" 
+                                id="thumbnail" 
+                                src={thumbnail
+                                    ? thumbnail 
+                                    : user.photosImagePath ? user.photosImagePath : '/images/default-user.png'} 
+                                alt="image preview" />
                         </label>
                     </div>
                 </div>

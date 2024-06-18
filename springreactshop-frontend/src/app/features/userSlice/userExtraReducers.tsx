@@ -1,20 +1,22 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, deleteUser, getAllUsers, getUserById, isEmailUnique, updateUser } from "./userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, deleteUser, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IUserResponseDto } from "../../../interfaces/dtos/IUserResponseDto";
 
 export const userExtraReducers = {
     builderGetAllUsers: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+
         builder.addCase(getAllUsers.pending, (state) => {
             state.loading = true;
             state.status = StatusConsts.LOADING;
         });
     
-        builder.addCase(getAllUsers.fulfilled, (state, action: PayloadAction<IUserDto[]>) => {
+        builder.addCase(getAllUsers.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
+            console.log(action.payload);
             state.loading = false;
-            state.users = action.payload;
+            state.userResponseDto = action.payload;
             state.status = StatusConsts.SUCCESS;
         });
     
@@ -56,6 +58,25 @@ export const userExtraReducers = {
         });
     
         builder.addCase(createUser.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    },
+
+    builderCreateUserNoUserPhotos: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(createUserNoUserPhotos.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+    
+        builder.addCase(createUserNoUserPhotos.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
+            state.loading = false;
+            state.user = action.payload.userDto!;
+            state.status = StatusConsts.SUCCESS;
+            state.responseMessage = action.payload.userDto!.email + action.payload.message;
+        });
+    
+        builder.addCase(createUserNoUserPhotos.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });
@@ -115,4 +136,23 @@ export const userExtraReducers = {
             state.status = StatusConsts.ERROR;
         });
     },
+
+    buildListByPage: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(listByPage.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+
+        builder.addCase(listByPage.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
+            state.loading = false;
+            state.userResponseDto = action.payload;
+            state.status = StatusConsts.SUCCESS;
+            state.responseMessage = action.payload.userDto!.email + action.payload.message;
+        });
+    
+        builder.addCase(listByPage.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    }
 }

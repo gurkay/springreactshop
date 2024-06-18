@@ -1,5 +1,5 @@
-
 import { IUserDto } from "./dtos/IUserDto";
+import { IUserResponseDto } from "./dtos/IUserResponseDto";
 
 export interface IUserInitialState {
     user: IUserDto;
@@ -8,4 +8,5 @@ export interface IUserInitialState {
     loading: boolean;
     status: string;
     responseMessage: string;
+    userResponseDto: IUserResponseDto;
 }

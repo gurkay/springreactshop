@@ -13,10 +13,15 @@ const UserService = {
         return response.data;
     },
 
-    createUser: async (userDto: IUserDto, image: any) => {
+    createUser: async (userDto: IUserDto, image: File | null = null) => {
         const formData = setFormData(userDto, image);
         const response = await HttpService.getAxiosClient().post(`admin/user`, formData);
-        console.log(response);
+        return response.data;
+    },
+
+    createUserNoUserPhotos: async (userDto: IUserDto) => {
+        const formData = setFormData(userDto, null);
+        const response = await HttpService.getAxiosClient().post(`admin/userNoUserPhotos`, formData);
         return response.data;
     },
 
@@ -39,14 +44,23 @@ const UserService = {
     updateUserEnabledStatus: async (userId: number, enabled: boolean) => {
         const response = await HttpService.getAxiosClient().get(`admin/user/${userId}/enabled/${enabled}`);
         return response.data;
+    },
+
+    listByPage: async (pageNum: number) => {
+        const response = await HttpService.getAxiosClient().get(`admin/users/page/${pageNum}`);
+        return response.data;
     }
 }
 
 export default UserService;
 
-function setFormData(userDto: IUserDto, image: any) {
+function setFormData(userDto: IUserDto, image: File | null) {
     const formData = new FormData();
     formData.append("userDto", JSON.stringify(userDto));
-    formData.append("file", image);
+    if(image !== null) {
+        formData.append("file", image) 
+    } else {
+        formData.append("file", '');
+    }
     return formData;
 }

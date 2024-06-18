@@ -1,17 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/store";
 import { IUserDto } from "../../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
 
 interface IProps {
-    handleEditwdUser: (userId: number) => void;
+    users: IUserDto[];
+    handleEditUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
 }
 
-const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const selectorUser = useSelector((state: RootState) => state.userReducer);
+const ListUsersTable = ({ users, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
 
     return (
         <div className="container">
@@ -30,7 +27,7 @@ const ListUsersTable = ({ handleEditUser, setSelectedUser, handleUpdateUserEnabl
                 </thead>
                 <tbody>
                     {
-                        selectorUser.users && selectorUser.users.map((user: IUserDto) => (
+                        users && users.map((user: IUserDto) => (
                             <tr key={user.id}>
                                 <th scope="row">{user.id}</th>
                                 <td> 

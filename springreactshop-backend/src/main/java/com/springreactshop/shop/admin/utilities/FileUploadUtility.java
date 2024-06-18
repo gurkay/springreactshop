@@ -33,6 +33,9 @@ public class FileUploadUtility {
 
     public static void deleteFile(String uploadDir) throws IOException {
         Path filePath = Paths.get(uploadDir);
+        if(!Files.exists(filePath)) {
+            return;
+        }
         Files.list(filePath).forEach(file -> {
             if(!Files.isDirectory(file)){
                 try {
@@ -43,5 +46,10 @@ public class FileUploadUtility {
             }
         });
         Files.deleteIfExists(filePath);
+    }
+
+    public static boolean isFileExist(String uploadDir, String fileName) {
+        Path filePath = Paths.get(uploadDir, fileName);
+        return Files.exists(filePath);
     }
 }

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { createUser, getUserById, isEmailUnique, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, getUserById, isEmailUnique, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import FormNewUserComponent from "../forms/FormNewUserComponent";
 import { emptyUser } from "../../../constants/emptyUser";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
@@ -17,8 +17,8 @@ const NewUserComponent = () => {
     const navigate = useNavigate();
     const { userId } = useParams();
     const [errors, setErrors] = useState<IUserDto>(emptyUser);
-    const [thumbnail, setThumbnail] = useState<any>()
-    const [photos, setPhotos] = useState<any>();
+    const [thumbnail, setThumbnail] = useState<any>();
+    const [photos, setPhotos] = useState<File>();
 
     useEffect(() => {
         if (userId) {
@@ -40,6 +40,7 @@ const NewUserComponent = () => {
 
     function getUser(userId: number) {
         dispatch(getUserById(userId));
+        setThumbnail(selectorUser.user.photosImagePath);
     }
 
     function handleFormElementChanged(name: string, value: string) {
@@ -66,30 +67,43 @@ const NewUserComponent = () => {
 
     async function addOrEditUser(event: any) {
         event.preventDefault();
-        
+
         if (userId) {
-            console.log(photos);
-            dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user, image: photos }))
-                .then((response: any) => {
-                    console.log(response);
-                    navigate('/admin/users');
-                    dispatch(clearUser());
-                }).catch((error: any) => {
-                    console.log(error);
-                });
+            dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user, image: photos }));
+            navigate('/admin/users');
+            window.location.reload();
+            dispatch(clearUser());
         } else {
             const result = await validateForm();
             if (!result) {
                 return;
             }
 
-            dispatch(createUser({userDto: selectorUser.user, image: photos}))
+            if( photos === undefined || photos === null) {
+                console.log('no image')
+                dispatch(createUserNoUserPhotos({ userDto: selectorUser.user}))
                 .then((response: any) => {
                     console.log(response);
                     navigate('/admin/users');
-                }).catch((error: any) => {
+                    window.location.reload();
+                    
+                })
+                .catch((error: any) => {
                     console.log(error);
                 });
+            } else {
+                dispatch(createUser({ userDto: selectorUser.user, image: photos! }))
+                .then((response: any) => {
+                    console.log(response);
+                    window.location.reload();
+                    navigate('/admin/users');
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                });
+            }
+
+
         }
     }
 
@@ -121,22 +135,20 @@ const NewUserComponent = () => {
         if (!selectorUser.user.email?.includes("@") ||
             !selectorUser.user.email?.includes(".") ||
             selectorUser.user.email?.trim().length < 5) {
-            errorsCopy.email = 'Invalid email';
+            errorsCopy.email = 'Email is invalid';
             isValid = false;
         } else {
-            errorsCopy.email = '';
+            await dispatch(isEmailUnique(selectorUser.user.email)).then((response: any) => {
+                if (response.payload) {
+                    errorsCopy.email = 'There is already a user with that email';
+                    isValid = false;
+                } else {
+                    errorsCopy.email = '';
+                }
+            }).catch((error: any) => {
+                console.log(error);
+            });
         }
-
-        await dispatch(isEmailUnique(selectorUser.user.email)).then((response: any) => {
-            if (response.payload) {
-                errorsCopy.email = 'there is already a user with that email';
-                isValid = false;
-            } else {
-                errorsCopy.email = '';
-            }
-        }).catch((error: any) => {
-            console.log(error);
-        });
 
         setErrors(errorsCopy);
 

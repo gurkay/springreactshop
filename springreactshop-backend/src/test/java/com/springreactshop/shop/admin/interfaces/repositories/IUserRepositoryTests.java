@@ -2,6 +2,7 @@ package com.springreactshop.shop.admin.interfaces.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 
 import com.springreactshop.shop.admin.interfaces.repositories.role.IRoleRepository;
@@ -17,7 +21,7 @@ import com.springreactshop.shop.admin.interfaces.repositories.user.IUserReposito
 import com.springreactshop.shop.common.entities.Role;
 import com.springreactshop.shop.common.entities.User;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class IUserRepositoryTests {
@@ -123,5 +127,18 @@ public class IUserRepositoryTests {
     public void testEnabledUser() {
         Long userId = Long.valueOf(34);
         userRepository.updateUserEnabledStatus(userId, true);
+    }
+
+    @Test
+    public void testListFirstPage() {
+        int pageNumber = 0;
+        int pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> users = userRepository.findAll(pageable);
+
+        List<User> userList = users.toList();
+
+        assertEquals(userList.size(), pageSize);
     }
 }

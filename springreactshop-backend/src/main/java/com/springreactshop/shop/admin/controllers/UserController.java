@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,10 +37,28 @@ public class UserController {
     private UserServiceImpl userService;
 
     @GetMapping("/users")
-    public List<UserDto> getAllUsers() {
-        return userService.getAll();
+    public ResponseEntity<UserResponseDto> getAllUsers() {
+        return listByPage(1);
     }
 
+    @GetMapping("/users/page/{pageNum}")
+    public ResponseEntity<UserResponseDto> listByPage(@PathVariable("pageNum") int pageNum) {
+        Page<UserDto> users = userService.listByPage(pageNum);
+        List<UserDto> usersDtos = users.getContent();
+        long startCount = (pageNum - 1) * UserServiceImpl.DEFAULT_PAGE_SIZE + 1;
+        long endCount = Math.min(pageNum * UserServiceImpl.DEFAULT_PAGE_SIZE, users.getTotalElements());
+        UserResponseDto response = new UserResponseDto(
+                                        usersDtos, 
+                                        pageNum, 
+                                        users.getTotalElements(), 
+                                        users.getTotalPages(),
+                                        startCount,
+                                        endCount,
+                                        pageNum);
+        response.setMessage(pageNum + " page of users");
+        return ResponseEntity.ok(response);
+    }
+    
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
         return ResponseEntity.ok(userService.getById(userId));
@@ -62,6 +81,16 @@ public class UserController {
 
         return ResponseEntity.ok(new UserResponseDto(savedUser, "User created successfully"));
     }
+
+    @PostMapping("/userNoUserPhotos")
+    public ResponseEntity<UserResponseDto> createUserNoUserPhotos(@RequestParam("userDto") String userDtoJson) throws IOException {
+        UserDto userDto = new ObjectMapper().readValue(userDtoJson, UserDto.class);
+        UserDto savedUser = null;
+        if(userDto.getPhotos().isEmpty()) userDto.setPhotos(null);
+        savedUser = userService.create(userDto);
+
+        return ResponseEntity.ok(new UserResponseDto(savedUser, "User created successfully"));
+    }
        
     @PutMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") Long userId, @RequestParam("userDto") String userDtoJson, @RequestParam("file") MultipartFile file) throws UserNotFoundException, IOException {
@@ -73,7 +102,9 @@ public class UserController {
             updateUser = userService.update(userId, userDto);
             String uploadDir = "springreactshop-frontend/public/images/user-photos" + "/" + userId;
 
-            FileUploadUtility.deleteFile(uploadDir);
+            if(FileUploadUtility.isFileExist(uploadDir, fileName)) {
+                FileUploadUtility.deleteFile(uploadDir);
+            }
             FileUploadUtility.saveFile(uploadDir, fileName, file);
         } else {
             updateUser = userService.update(userId, userDto);

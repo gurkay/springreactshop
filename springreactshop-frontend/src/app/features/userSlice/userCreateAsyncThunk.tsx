@@ -12,9 +12,15 @@ export const getUserById: any = createAsyncThunk('getUserById', async (id: numbe
   return Promise.resolve(response);
 });
 
-export const createUser: any = createAsyncThunk('createUser', async (payload: {userDto: IUserDto, image: any}) => {
+export const createUser: any = createAsyncThunk('createUser', async (payload: {userDto: IUserDto, image?: File}) => {
   const { userDto, image } = payload;
-  const response = await UserService.createUser(userDto, image);
+  const response = await UserService.createUser(userDto, image!);
+  return Promise.resolve(response);
+});
+
+export const createUserNoUserPhotos: any = createAsyncThunk('createUserNoUserPhotos', async (payload: {userDto: IUserDto}) => {
+  const { userDto } = payload;
+  const response = await UserService.createUserNoUserPhotos(userDto);
   return Promise.resolve(response);
 });
 
@@ -39,3 +45,8 @@ export const updateUserEnabledStatus: any = createAsyncThunk('updateUserEnabledS
   const response = await UserService.updateUserEnabledStatus(userId, enabled);
   return Promise.resolve(response);
 })
+
+export const listByPage: any = createAsyncThunk('listByPage', async (pageNum: number) =>{
+  const response = await UserService.listByPage(pageNum);
+  return Promise.resolve(response);
+});

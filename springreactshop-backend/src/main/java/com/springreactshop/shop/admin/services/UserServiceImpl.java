@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService<UserDto> {
+    public static final int DEFAULT_PAGE_SIZE = 4;
 
     @Autowired
     private IUserRepository userRepository;
@@ -31,6 +35,14 @@ public class UserServiceImpl implements IUserService<UserDto> {
     public List<UserDto> getAll() {
         List<User> users = userRepository.findAll();
         List<UserDto> usersDtos = users.stream().map(user -> UserMapper.mapToUserDto(user)).collect(Collectors.toList());
+
+        return usersDtos;
+    }
+
+    public Page<UserDto> listByPage(int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum - 1, DEFAULT_PAGE_SIZE);
+        Page<User> users = userRepository.findAll(pageable);
+        Page<UserDto> usersDtos = users.map(user -> UserMapper.mapToUserDto(user));
 
         return usersDtos;
     }

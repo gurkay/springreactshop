@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUsers, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, listByPage, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
 import { setResponseMessage, setUser } from "../../../app/features/userSlice/userSlice";
 import { emptyUser } from "../../../constants/emptyUser";
 import DeleteUserModal from "../../modals/DeleteUserModal";
 import ListUsersTable from "./utility/ListUsersTable";
+import { StatusConsts } from "../../../constants/StatusConsts";
+import UserPagination from "../../paginations/UserPagination";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -17,14 +19,16 @@ const ListUsersComponent = () => {
 
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<IUserDto>(emptyUser);
+    const { pageNum } = useParams();
 
     useEffect(() => {
-        fetchUsers();
+        console.log("pageNum: ", pageNum);
+        fetchUsers(pageNum ? parseInt(pageNum) : 1);
         fetchRoles();
     }, []);
 
-    function fetchUsers() {
-        dispatch(getAllUsers());
+    function fetchUsers(pageNum: number) {
+        dispatch(listByPage(pageNum));
     }
 
     function fetchRoles() {
@@ -41,9 +45,9 @@ const ListUsersComponent = () => {
     }
 
     function handleUpdateUserEnabledStatus(userId: number, enabled: boolean) {
-        dispatch(updateUserEnabledStatus({ userId: Number(userId), enabled: enabled })).then((response: any) => {
-            dispatch(setResponseMessage(response.payload));
-            fetchUsers();
+        dispatch(updateUserEnabledStatus({ userId, enabled })).then((response: any) => {
+            dispatch(setResponseMessage(response.payload.message));
+            fetchUsers(pageNum ? parseInt(pageNum) : 1);
             navigate('/admin/users');
         }).catch((error: any) => {
             console.log(error);
@@ -58,7 +62,7 @@ const ListUsersComponent = () => {
         dispatch(deleteUser(userId))
             .then((response: string) => {
                 console.log(response);
-                fetchUsers();
+                fetchUsers(pageNum ? parseInt(pageNum) : 1);
                 navigate('/admin/users');
             }).catch((error: any) => {
                 console.log(error);
@@ -76,16 +80,14 @@ const ListUsersComponent = () => {
                     </div>
                 </div>
             </div>
+            {selectorUser.status === StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
+            {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}
 
-            {
-                selectorUser.responseMessage && <div className="alert alert-success" role="alert">{selectorUser.responseMessage}</div>
-            }
+            <ListUsersTable users={selectorUser.userResponseDto?.users} handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
+            
+            <UserPagination showingInfo="Showing users #" userResponseDto={selectorUser.userResponseDto}/>
 
-            <ListUsersTable handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
-
-            {
-                showDeleteModal || showDeleteModal !== undefined && <DeleteUserModal selectedUser={selectedUser} handleDeleteUser={handleDeleteUser} />
-            }
+            {showDeleteModal && <DeleteUserModal selectedUser={selectedUser} handleDeleteUser={handleDeleteUser} />}
 
         </div>
     );
