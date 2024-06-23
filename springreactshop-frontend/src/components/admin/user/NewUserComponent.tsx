@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { createUser, createUserNoUserPhotos, getUserById, isEmailUnique, updateUser } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, getUserById, isEmailUnique, updateUser, updateUserWithoutPhotos } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import FormNewUserComponent from "../forms/FormNewUserComponent";
 import { emptyUser } from "../../../constants/emptyUser";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
@@ -69,10 +69,17 @@ const NewUserComponent = () => {
         event.preventDefault();
 
         if (userId) {
-            dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user, image: photos }));
-            navigate('/admin/users');
-            window.location.reload();
-            dispatch(clearUser());
+            if(photos === undefined || photos === null) {
+                dispatch(updateUserWithoutPhotos({ userId: Number(userId), userDto: selectorUser.user}));
+                await navigate('/admin/users');
+                window.location.reload();
+                dispatch(clearUser());                
+            } else {
+                dispatch(updateUser({ userId: Number(userId), userDto: selectorUser.user, image: photos!}));
+                await navigate('/admin/users');
+                window.location.reload();
+                dispatch(clearUser()); 
+            }
         } else {
             const result = await validateForm();
             if (!result) {

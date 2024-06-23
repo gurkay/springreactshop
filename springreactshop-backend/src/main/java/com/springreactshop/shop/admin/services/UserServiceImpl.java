@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +40,10 @@ public class UserServiceImpl implements IUserService<UserDto> {
         return usersDtos;
     }
 
-    public Page<UserDto> listByPage(int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum - 1, DEFAULT_PAGE_SIZE);
+    public Page<UserDto> listByPage(int pageNum, String sortField, String sortDir) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNum - 1, DEFAULT_PAGE_SIZE, sort);
         Page<User> users = userRepository.findAll(pageable);
         Page<UserDto> usersDtos = users.map(user -> UserMapper.mapToUserDto(user));
 

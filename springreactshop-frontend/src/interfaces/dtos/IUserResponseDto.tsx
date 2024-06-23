@@ -10,4 +10,6 @@ export interface IUserResponseDto {
     startCount: number,
     endCount: number,
     currentPage: number,
+    sortField: string,
+    sortDir: string,
 }

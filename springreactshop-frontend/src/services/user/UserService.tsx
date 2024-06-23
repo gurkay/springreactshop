@@ -4,6 +4,7 @@ import HttpService from "../HttpService";
 const UserService = {
 
     getAllUsers: async () => {
+        console.log("getAllUsers");
         const response = await HttpService.getAxiosClient().get(`admin/users`);
         return response.data;
     },
@@ -31,6 +32,12 @@ const UserService = {
         return response.data;
     },
 
+    updateUserWithoutPhotos: async (userId: number, userDto: IUserDto) => {
+        const formData = setFormData(userDto, null);
+        const response = await HttpService.getAxiosClient().put(`admin/userWithoutPhotos/${userId}`, formData);
+        return response.data;
+    },
+
     deleteUser: async (userId: number) => {
         const response = await HttpService.getAxiosClient().delete(`admin/user/${userId}`);
         return response.data;
@@ -46,7 +53,8 @@ const UserService = {
         return response.data;
     },
 
-    listByPage: async (pageNum: number) => {
+    listByPage: async (pageNum: number, sortField: string, sortDir: string) => {
+        console.log(`admin/users/page/${pageNum}?sortField=${sortField}&sortDir=${sortDir}`);
         const response = await HttpService.getAxiosClient().get(`admin/users/page/${pageNum}`);
         return response.data;
     }

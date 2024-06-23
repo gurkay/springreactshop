@@ -21,13 +21,24 @@ public class UserResponseDto {
     private long startCount = 0;
     private long endCount = 0;
     private long currentPage = 0;
+    private String sortField = "";
+    private String sortDir = "";
 
     public UserResponseDto(UserDto userDto, String message) {
         this.userDto = userDto;
         this.message = message;
     }
 
-    public UserResponseDto(List<UserDto> users, int pageNum, long totalElements, int totalPages, long startCount, long endCount, long currentPage) {
+    public UserResponseDto(
+        List<UserDto> users, 
+        int pageNum, 
+        long totalElements, 
+        int totalPages, 
+        long startCount, 
+        long endCount, 
+        long currentPage,
+        String sortField,
+        String sortDir) {
         this.users = users;
         this.pageNum = pageNum;
         this.totalElements = totalElements;
@@ -35,5 +46,7 @@ public class UserResponseDto {
         this.startCount = startCount;
         this.endCount = endCount;
         this.currentPage = currentPage;
+        this.sortField = sortField;
+        this.sortDir = sortDir;
     }
 }

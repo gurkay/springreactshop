@@ -26,8 +26,6 @@ import com.springreactshop.shop.common.exception.UserNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -38,12 +36,16 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<UserResponseDto> getAllUsers() {
-        return listByPage(1);
+        return listByPage(1, "id", "asc");
     }
 
     @GetMapping("/users/page/{pageNum}")
-    public ResponseEntity<UserResponseDto> listByPage(@PathVariable("pageNum") int pageNum) {
-        Page<UserDto> users = userService.listByPage(pageNum);
+    public ResponseEntity<UserResponseDto> listByPage(
+                                                @PathVariable("pageNum") int pageNum,
+                                                @RequestParam(value = "sortField", required = false, defaultValue = "id") String sortField,
+                                                @RequestParam(value = "sortDir", required = false, defaultValue = "desc") String sortDir
+                                                ) {
+        Page<UserDto> users = userService.listByPage(pageNum, sortField, sortDir);
         List<UserDto> usersDtos = users.getContent();
         long startCount = (pageNum - 1) * UserServiceImpl.DEFAULT_PAGE_SIZE + 1;
         long endCount = Math.min(pageNum * UserServiceImpl.DEFAULT_PAGE_SIZE, users.getTotalElements());
@@ -54,7 +56,9 @@ public class UserController {
                                         users.getTotalPages(),
                                         startCount,
                                         endCount,
-                                        pageNum);
+                                        pageNum,
+                                        "firstName",
+                                        "asc");
         response.setMessage(pageNum + " page of users");
         return ResponseEntity.ok(response);
     }
@@ -111,8 +115,13 @@ public class UserController {
         }
         return ResponseEntity.ok(new UserResponseDto(updateUser, "User update successfully"));
     }
-        
-    
+
+    @PutMapping("/userWithoutPhotos/{id}")
+    public ResponseEntity<UserResponseDto> updateUserWithoutPhotos(@PathVariable("id") Long userId, @RequestParam("userDto") String userDtoJson) throws UserNotFoundException, IOException {
+        UserDto userDto = new ObjectMapper().readValue(userDtoJson, UserDto.class);
+        UserDto updateUser = userService.update(userId, userDto);
+        return ResponseEntity.ok(new UserResponseDto(updateUser, "User update successfully"));
+    }
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId) throws UserNotFoundException {

@@ -30,6 +30,12 @@ export const updateUser: any = createAsyncThunk('updateUser', async (payload: { 
   return Promise.resolve(response);
 });
 
+export const updateUserWithoutPhotos: any = createAsyncThunk('updateUserWithoutPhotos', async (payload: { userId: number, userDto: IUserDto }) => {
+  const { userId, userDto } = payload;
+  const response = await UserService.updateUserWithoutPhotos(userId, userDto);
+  return Promise.resolve(response);
+});
+
 export const deleteUser: any = createAsyncThunk('deleteUser', async (id: number) => {
   const response = await UserService.deleteUser(id);
   return Promise.resolve(response);
@@ -46,7 +52,9 @@ export const updateUserEnabledStatus: any = createAsyncThunk('updateUserEnabledS
   return Promise.resolve(response);
 })
 
-export const listByPage: any = createAsyncThunk('listByPage', async (pageNum: number) =>{
-  const response = await UserService.listByPage(pageNum);
+export const listByPage: any = createAsyncThunk('listByPage', async (payload: { pageNum: number, sortField: string, sortDir: string }) => {
+  const { pageNum, sortField, sortDir } = payload;
+  console.log(pageNum, sortField, sortDir);
+  const response = await UserService.listByPage(pageNum, sortField, sortDir);
   return Promise.resolve(response);
 });

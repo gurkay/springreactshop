@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, createUserNoUserPhotos, deleteUser, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser } from "./userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, deleteUser, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser, updateUserWithoutPhotos } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IUserResponseDto } from "../../../interfaces/dtos/IUserResponseDto";
@@ -90,12 +90,31 @@ export const userExtraReducers = {
     
         builder.addCase(updateUser.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
             state.loading = false;
-            state.user = action.payload.userDto!;
+            state.userResponseDto = action.payload!;
             state.status = StatusConsts.SUCCESS;
-            state.responseMessage = action.payload.userDto!.email + action.payload.message;
+            state.userResponseDto.message = action.payload.userDto!.email + action.payload.message;
         });
     
         builder.addCase(updateUser.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    },
+
+    builderUpdateUserWithoutPhotos: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(updateUserWithoutPhotos.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+    
+        builder.addCase(updateUserWithoutPhotos.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
+            state.loading = false;
+            state.userResponseDto = action.payload!;
+            state.status = StatusConsts.SUCCESS;
+            state.userResponseDto.message = action.payload.userDto!.email + action.payload.message;
+        });
+    
+        builder.addCase(updateUserWithoutPhotos.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });

@@ -6,7 +6,6 @@ import NewUserComponent from "../admin/user/NewUserComponent";
 const MyRoutes = () => {
     return (
         <Routes>
-            <Route path="/admin/users/page/1" element={<ListUsersComponent />} />
             <Route path="/home" element={<AdminHomeComponent />} />
             <Route path="/admin/users" element={<ListUsersComponent />} />
             <Route path="/admin/users/page/:pageNum" element={<ListUsersComponent />} />

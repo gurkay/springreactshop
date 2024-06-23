@@ -22,13 +22,14 @@ const ListUsersComponent = () => {
     const { pageNum } = useParams();
 
     useEffect(() => {
-        console.log("pageNum: ", pageNum);
+        
         fetchUsers(pageNum ? parseInt(pageNum) : 1);
         fetchRoles();
     }, []);
 
     function fetchUsers(pageNum: number) {
-        dispatch(listByPage(pageNum));
+        console.log(pageNum);
+        dispatch(listByPage({pageNum: pageNum, sortField: "firstName", sortDir: "asc"}));
     }
 
     function fetchRoles() {
@@ -83,7 +84,7 @@ const ListUsersComponent = () => {
             {selectorUser.status === StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
             {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}
 
-            <ListUsersTable users={selectorUser.userResponseDto?.users} handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
+            <ListUsersTable userResponseDto={selectorUser?.userResponseDto} handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
             
             <UserPagination showingInfo="Showing users #" userResponseDto={selectorUser.userResponseDto}/>
 

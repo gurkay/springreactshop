@@ -1,14 +1,15 @@
 import { IUserDto } from "../../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
+import { IUserResponseDto } from "../../../../interfaces/dtos/IUserResponseDto";
 
 interface IProps {
-    users: IUserDto[];
+    userResponseDto: IUserResponseDto;
     handleEditUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
 }
 
-const ListUsersTable = ({ users, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
+const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
 
     return (
         <div className="container">
@@ -18,7 +19,15 @@ const ListUsersTable = ({ users, handleEditUser, setSelectedUser, handleUpdateUs
                         <th scope="col">#</th>
                         <th scope="col">Photos</th>
                         <th scope="col">E-mail</th>
-                        <th scope="col">First Name</th>
+                        <th scope="col">
+                            {
+                                <span className={`${userResponseDto?.sortField === 'firstName'? 'caret-up-fill' : 'caret-down-fill'}`}>
+                                    <a className="text-decoration-none" href={`/admin/users/page/${userResponseDto?.currentPage}?sortField=${"firstName"}&sortDir=${userResponseDto?.sortDir}`}>
+                                        First Name
+                                    </a>
+                                </span>
+                            }
+                        </th>
                         <th scope="col">Last Name</th>
                         <th scope="col">Roles</th>
                         <th scope="col">Enabled</th>
@@ -27,10 +36,10 @@ const ListUsersTable = ({ users, handleEditUser, setSelectedUser, handleUpdateUs
                 </thead>
                 <tbody>
                     {
-                        users && users.map((user: IUserDto) => (
+                        userResponseDto?.users && userResponseDto?.users.map((user: IUserDto) => (
                             <tr key={user.id}>
                                 <th scope="row">{user.id}</th>
-                                <td> 
+                                <td>
                                     {
                                         user.photos === null && <img src={user.photosImagePath} alt="User" />
                                     }
