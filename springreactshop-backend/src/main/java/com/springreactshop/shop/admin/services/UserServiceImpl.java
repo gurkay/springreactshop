@@ -40,10 +40,18 @@ public class UserServiceImpl implements IUserService<UserDto> {
         return usersDtos;
     }
 
-    public Page<UserDto> listByPage(int pageNum, String sortField, String sortDir) {
+    public Page<UserDto> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNum - 1, DEFAULT_PAGE_SIZE, sort);
+
+        if(keyword != null) {
+            Page<User> users = userRepository.findAll(keyword, pageable);
+            Page<UserDto> usersDtos = users.map(user -> UserMapper.mapToUserDto(user));
+    
+            return usersDtos;
+        }
+
         Page<User> users = userRepository.findAll(pageable);
         Page<UserDto> usersDtos = users.map(user -> UserMapper.mapToUserDto(user));
 

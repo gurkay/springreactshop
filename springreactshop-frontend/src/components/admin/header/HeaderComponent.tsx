@@ -1,7 +1,4 @@
-import { useMyRoutes } from "../../myRoutes/MyRoutes";
-
 const HeaderComponent = () => {
-    const {handleListSort} = useMyRoutes();
     return (
         <div className="card">
             <nav className="navbar navbar-expand-lg bg-body-tertiary">

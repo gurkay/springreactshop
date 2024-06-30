@@ -23,6 +23,7 @@ public class UserResponseDto {
     private long currentPage = 0;
     private String sortField = "";
     private String sortDir = "";
+    private String keyword = "";
 
     public UserResponseDto(UserDto userDto, String message) {
         this.userDto = userDto;
@@ -38,7 +39,8 @@ public class UserResponseDto {
         long endCount, 
         long currentPage,
         String sortField,
-        String sortDir) {
+        String sortDir,
+        String keyword) {
         this.users = users;
         this.pageNum = pageNum;
         this.totalElements = totalElements;
@@ -48,5 +50,6 @@ public class UserResponseDto {
         this.currentPage = currentPage;
         this.sortField = sortField;
         this.sortDir = sortDir;
+        this.keyword = keyword;
     }
 }

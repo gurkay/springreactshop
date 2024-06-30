@@ -1,14 +1,13 @@
 import { IUserDto } from "../../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
 import { IUserResponseDto } from "../../../../interfaces/dtos/IUserResponseDto";
-import {useMyRoutes} from "../../../myRoutes/MyRoutes";
 
 interface IProps {
     userResponseDto: IUserResponseDto;
     handleEditUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
-    handleUsersListSort: (page: number, sortField: string, sortDir: string) => void;
+    handleUsersListSort: (page: number, sortField: string, sortDir: string, keyword: string) => void;
 }
 
 const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus, handleUsersListSort }: IProps) => {
@@ -23,7 +22,14 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                 <a
                                     href="#"
                                     className="text-decoration-none"
-                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "id", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                    onClick={
+                                        () => handleUsersListSort(
+                                                userResponseDto.currentPage, 
+                                                "id", 
+                                                userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc',
+                                                userResponseDto?.keyword !== '' ? userResponseDto?.keyword : ''
+                                            )
+                                    }
                                 >
                                     Id 
                                     <i className={userResponseDto?.sortField === "id" 
@@ -41,7 +47,8 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                 <a
                                     href="#"
                                     className="text-decoration-none"
-                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "email", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "email", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc',
+                                        userResponseDto?.keyword !== '' ? userResponseDto?.keyword : '')}
                                 >
                                     E-mail
                                     <i className={userResponseDto?.sortField === "email" 
@@ -58,7 +65,8 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                 <a
                                     href="#"
                                     className="text-decoration-none"
-                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "firstName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "firstName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc',
+                                        userResponseDto?.keyword !== '' ? userResponseDto?.keyword : '')}
                                 >
                                     First Name 
                                     <i className={userResponseDto?.sortField === "firstName" 
@@ -75,7 +83,8 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                 <a  
                                     href="#"
                                     className="text-decoration-none"
-                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "lastName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "lastName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc',
+                                        userResponseDto?.keyword !== '' ? userResponseDto?.keyword : '')}
                                 >
                                     Last Name
                                     <i className={userResponseDto?.sortField === "lastName" 

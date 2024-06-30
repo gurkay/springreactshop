@@ -141,4 +141,19 @@ public class IUserRepositoryTests {
 
         assertEquals(userList.size(), pageSize);
     }
+
+    @Test
+    public void testFindAll() {
+        String keyword = "basyigit";
+        int pageNumber = 0;
+        int pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> page = userRepository.findAll(keyword, pageable);
+        List<User> userList = page.getContent();
+        userList.forEach(user -> System.out.println(user));
+
+        assertEquals(userList.size() > 0, true);
+
+    }
 }

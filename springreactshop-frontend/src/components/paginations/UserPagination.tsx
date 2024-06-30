@@ -1,10 +1,9 @@
 import { IUserResponseDto } from "../../interfaces/dtos/IUserResponseDto";
-import { useMyRoutes } from "../myRoutes/MyRoutes";
 
 interface UserPaginationProps {
     showingInfo: string;
     userResponseDto: IUserResponseDto;
-    handleUsersListSort: (page: number, sortField: string, sortDir: string) => void;
+    handleUsersListSort: (page: number, sortField: string, sortDir: string, keyword: string) => void;
 }
 
 const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: UserPaginationProps) => {
@@ -21,7 +20,7 @@ const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: U
                         <li
                             className={`${userResponseDto?.currentPage === 1 ? `page-item disabled` : `page-item`}`}
                         >
-                            <a className="page-link" href="#" onClick={() => handleUsersListSort(1, userResponseDto?.sortField, userResponseDto?.sortDir)}>First</a>
+                            <a className="page-link" href="#" onClick={() => handleUsersListSort(1, userResponseDto?.sortField, userResponseDto?.sortDir, '')}>First</a>
                         </li>
                         <li
                             className={`${userResponseDto?.currentPage === 1 ? `page-item disabled` : `page-item`}`}
@@ -29,7 +28,8 @@ const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: U
                             <a 
                                 className="page-link" 
                                 href="#"
-                                onClick={() => handleUsersListSort(userResponseDto?.currentPage - 1 !== 0 ? userResponseDto?.currentPage - 1 : 1, userResponseDto?.sortField, userResponseDto?.sortDir)}
+                                onClick={() => handleUsersListSort(userResponseDto?.currentPage - 1 !== 0 ? userResponseDto?.currentPage - 1 : 1, userResponseDto?.sortField, userResponseDto?.sortDir,
+                                    userResponseDto?.keyword !== '' ? userResponseDto?.keyword : '')}
                             >Previous</a></li>
                         {
                             userResponseDto?.totalPages &&
@@ -41,7 +41,14 @@ const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: U
                                     >
                                         <a 
                                             className="page-link" 
-                                            onClick={() => handleUsersListSort(page, userResponseDto?.sortField, userResponseDto?.sortDir)}
+                                            onClick={
+                                                () => handleUsersListSort(
+                                                        page, 
+                                                        userResponseDto?.sortField, 
+                                                        userResponseDto?.sortDir,
+                                                        userResponseDto?.keyword !== '' ? userResponseDto?.keyword : ''
+                                                    )
+                                            }
                                             href="#"
                                         >
                                             {page}
@@ -55,7 +62,8 @@ const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: U
                         >
                             <a 
                                 className="page-link" 
-                                onClick={() => handleUsersListSort(userResponseDto?.currentPage + 1, userResponseDto?.sortField, userResponseDto?.sortDir)} 
+                                onClick={() => handleUsersListSort(userResponseDto?.currentPage + 1, userResponseDto?.sortField, userResponseDto?.sortDir,
+                                    userResponseDto?.keyword !== '' ? userResponseDto?.keyword : '')} 
                                 href="#"
                             >Next</a></li>
                         <li
@@ -64,7 +72,7 @@ const UserPagination = ({ showingInfo, userResponseDto, handleUsersListSort }: U
                             <a 
                                 className="page-link" 
                                 href="#"
-                                onClick={() => handleUsersListSort(userResponseDto?.totalPages, userResponseDto?.sortField, userResponseDto?.sortDir)} 
+                                onClick={() => handleUsersListSort(userResponseDto?.totalPages, userResponseDto?.sortField, userResponseDto?.sortDir, '')} 
                             >Last</a></li>
                     </ul>
                 </nav>

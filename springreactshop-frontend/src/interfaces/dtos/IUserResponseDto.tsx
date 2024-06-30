@@ -12,4 +12,5 @@ export interface IUserResponseDto {
     currentPage: number,
     sortField: string,
     sortDir: string,
+    keyword: string,
 }

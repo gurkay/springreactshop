@@ -36,16 +36,17 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<UserResponseDto> getAllUsers() {
-        return listByPage(1, "id", "asc");
+        return listByPage(1, "id", "asc", null);
     }
 
     @GetMapping("/users/page/{pageNum}")
     public ResponseEntity<UserResponseDto> listByPage(
                                                 @PathVariable("pageNum") int pageNum,
                                                 @RequestParam(value = "sortField", required = false, defaultValue = "id") String sortField,
-                                                @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir
+                                                @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir,
+                                                @RequestParam(value = "keyword", required = false) String keyword
                                                 ) {
-        Page<UserDto> users = userService.listByPage(pageNum, sortField, sortDir);
+        Page<UserDto> users = userService.listByPage(pageNum, sortField, sortDir, keyword);
         List<UserDto> usersDtos = users.getContent();
         long startCount = (pageNum - 1) * UserServiceImpl.DEFAULT_PAGE_SIZE + 1;
         long endCount = Math.min(pageNum * UserServiceImpl.DEFAULT_PAGE_SIZE, users.getTotalElements());
@@ -58,7 +59,8 @@ public class UserController {
                                         endCount,
                                         pageNum,
                                         sortField,  
-                                        sortDir);
+                                        sortDir,
+                                        keyword);
         response.setMessage(pageNum + " page of users");
         return ResponseEntity.ok(response);
     }
