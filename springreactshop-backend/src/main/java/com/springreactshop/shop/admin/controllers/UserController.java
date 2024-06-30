@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<UserResponseDto> listByPage(
                                                 @PathVariable("pageNum") int pageNum,
                                                 @RequestParam(value = "sortField", required = false, defaultValue = "id") String sortField,
-                                                @RequestParam(value = "sortDir", required = false, defaultValue = "desc") String sortDir
+                                                @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir
                                                 ) {
         Page<UserDto> users = userService.listByPage(pageNum, sortField, sortDir);
         List<UserDto> usersDtos = users.getContent();

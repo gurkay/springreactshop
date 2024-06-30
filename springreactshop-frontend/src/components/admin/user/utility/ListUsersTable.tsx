@@ -18,9 +18,41 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
             <table className="table table-striped table-bordered table-hover table-responsive">
                 <thead className="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">
+                            {
+                                <a
+                                    href="#"
+                                    className="text-decoration-none"
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "id", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                >
+                                    Id 
+                                    <i className={userResponseDto?.sortField === "id" 
+                                                    ? userResponseDto?.sortDir === 'asc' 
+                                                        ? "bi bi-caret-up-fill" 
+                                                        : "bi bi-caret-down-fill" 
+                                                    : ""}>
+                                    </i>
+                                </a>
+                            }
+                        </th>
                         <th scope="col">Photos</th>
-                        <th scope="col">E-mail</th>
+                        <th scope="col">
+                            {
+                                <a
+                                    href="#"
+                                    className="text-decoration-none"
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "email", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                >
+                                    E-mail
+                                    <i className={userResponseDto?.sortField === "email" 
+                                                    ? userResponseDto?.sortDir === 'asc' 
+                                                        ? "bi bi-caret-up-fill" 
+                                                        : "bi bi-caret-down-fill" 
+                                                    : ""}>
+                                    </i>
+                                </a>
+                            }
+                        </th>
                         <th scope="col">
                             {
                                 <a
@@ -28,7 +60,13 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                     className="text-decoration-none"
                                     onClick={() => handleUsersListSort(userResponseDto.currentPage, "firstName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
                                 >
-                                    First Name <i className={userResponseDto?.sortDir === 'asc' ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+                                    First Name 
+                                    <i className={userResponseDto?.sortField === "firstName" 
+                                                    ? userResponseDto?.sortDir === 'asc' 
+                                                        ? "bi bi-caret-up-fill" 
+                                                        : "bi bi-caret-down-fill" 
+                                                    : ""}>
+                                    </i>
                                 </a>
                             }
                         </th>
@@ -39,7 +77,13 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                     className="text-decoration-none"
                                     onClick={() => handleUsersListSort(userResponseDto.currentPage, "lastName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
                                 >
-                                    Last Name <i className={userResponseDto?.sortDir === 'asc' ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+                                    Last Name
+                                    <i className={userResponseDto?.sortField === "lastName" 
+                                                    ? userResponseDto?.sortDir === 'asc' 
+                                                        ? "bi bi-caret-up-fill" 
+                                                        : "bi bi-caret-down-fill" 
+                                                    : ""}>
+                                    </i>
                                 </a>
                             }
                         </th>
