@@ -52,9 +52,7 @@ export const updateUserEnabledStatus: any = createAsyncThunk('updateUserEnabledS
   return Promise.resolve(response);
 })
 
-export const listByPage: any = createAsyncThunk('listByPage', async (payload: { pageNum: number, sortField: string, sortDir: string }) => {
-  const { pageNum, sortField, sortDir } = payload;
-  console.log(pageNum, sortField, sortDir);
-  const response = await UserService.listByPage(pageNum, sortField, sortDir);
+export const listByPage: any = createAsyncThunk('listByPage', async (userListPath: string) => {
+  const response = await UserService.listByPage(userListPath);
   return Promise.resolve(response);
 });

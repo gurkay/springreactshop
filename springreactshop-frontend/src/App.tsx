@@ -1,14 +1,14 @@
 import { BrowserRouter } from 'react-router-dom';
 import './App.css'
 import HeaderComponent from './components/admin/header/HeaderComponent';
-import MyRoutes from './components/myRoutes/MyRoutes';
+import DefaultRoutes from './components/myRoutes/DefaultRoutes';
 import FooterComponent from './components/footer/FooterComponent';
 
 function App() {
   return (
     <BrowserRouter>
       <HeaderComponent />
-        <MyRoutes />
+        <DefaultRoutes />
       <FooterComponent />
     </BrowserRouter>
   );

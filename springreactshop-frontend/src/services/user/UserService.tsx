@@ -53,9 +53,9 @@ const UserService = {
         return response.data;
     },
 
-    listByPage: async (pageNum: number, sortField: string, sortDir: string) => {
-        console.log(`admin/users/page/${pageNum}?sortField=${sortField}&sortDir=${sortDir}`);
-        const response = await HttpService.getAxiosClient().get(`admin/users/page/${pageNum}`);
+    listByPage: async (userListPath: string) => {
+        console.log("UserService:::listByPage:::userListPath: ", userListPath);
+        const response = await HttpService.getAxiosClient().get(userListPath);
         return response.data;
     }
 }

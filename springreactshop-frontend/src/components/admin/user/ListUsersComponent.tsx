@@ -11,9 +11,11 @@ import DeleteUserModal from "../../modals/DeleteUserModal";
 import ListUsersTable from "./utility/ListUsersTable";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import UserPagination from "../../paginations/UserPagination";
+import { useMyRoutes } from "../../myRoutes/MyRoutes";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
+    //const {handleListSort} = useMyRoutes();
     const dispatch = useDispatch<AppDispatch>();
     const selectorUser = useSelector((state: RootState) => state.userReducer);
 
@@ -22,14 +24,20 @@ const ListUsersComponent = () => {
     const { pageNum } = useParams();
 
     useEffect(() => {
-        
+        console.log("ListUsersComponent.tsx: pageNum: ", pageNum);
         fetchUsers(pageNum ? parseInt(pageNum) : 1);
         fetchRoles();
     }, []);
 
     function fetchUsers(pageNum: number) {
-        console.log(pageNum);
-        dispatch(listByPage({pageNum: pageNum, sortField: "firstName", sortDir: "asc"}));
+        
+        handleUsersListSort(pageNum, "id", "asc");
+    }
+
+    function handleUsersListSort (pageNum: number, sortField: string, sortDir: string) {
+        const userListPath = `admin/users/page/${pageNum}?sortField=${sortField}&sortDir=${sortDir}`;
+        console.log(userListPath);
+        dispatch(listByPage(userListPath));
     }
 
     function fetchRoles() {
@@ -83,11 +91,18 @@ const ListUsersComponent = () => {
             </div>
             {selectorUser.status === StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
             {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}
-
-            <ListUsersTable userResponseDto={selectorUser?.userResponseDto} handleEditUser={handleEditUser} setSelectedUser={setSelectedUser} handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus} />
-            
-            <UserPagination showingInfo="Showing users #" userResponseDto={selectorUser.userResponseDto}/>
-
+                <ListUsersTable
+                    userResponseDto={selectorUser?.userResponseDto}
+                    handleEditUser={handleEditUser}
+                    setSelectedUser={setSelectedUser}
+                    handleUpdateUserEnabledStatus={handleUpdateUserEnabledStatus}
+                    handleUsersListSort={handleUsersListSort}
+                />
+                <UserPagination 
+                    showingInfo="Showing users #" 
+                    userResponseDto={selectorUser.userResponseDto}
+                    handleUsersListSort={handleUsersListSort}
+                />
             {showDeleteModal && <DeleteUserModal selectedUser={selectedUser} handleDeleteUser={handleDeleteUser} />}
 
         </div>

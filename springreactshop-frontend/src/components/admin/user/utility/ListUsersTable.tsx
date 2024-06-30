@@ -1,15 +1,17 @@
 import { IUserDto } from "../../../../interfaces/dtos/IUserDto";
 import { IRoleDto } from "../../../../interfaces/dtos/IRoleDto";
 import { IUserResponseDto } from "../../../../interfaces/dtos/IUserResponseDto";
+import {useMyRoutes} from "../../../myRoutes/MyRoutes";
 
 interface IProps {
     userResponseDto: IUserResponseDto;
     handleEditUser: (userId: number) => void;
     setSelectedUser: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
+    handleUsersListSort: (page: number, sortField: string, sortDir: string) => void;
 }
 
-const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus }: IProps) => {
+const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus, handleUsersListSort }: IProps) => {
 
     return (
         <div className="container">
@@ -21,14 +23,26 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                         <th scope="col">E-mail</th>
                         <th scope="col">
                             {
-                                <span className={`${userResponseDto?.sortField === 'firstName'? 'caret-up-fill' : 'caret-down-fill'}`}>
-                                    <a className="text-decoration-none" href={`/admin/users/page/${userResponseDto?.currentPage}?sortField=${"firstName"}&sortDir=${userResponseDto?.sortDir}`}>
-                                        First Name
-                                    </a>
-                                </span>
+                                <a
+                                    href="#"
+                                    className="text-decoration-none"
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "firstName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                >
+                                    First Name <i className={userResponseDto?.sortDir === 'asc' ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+                                </a>
                             }
                         </th>
-                        <th scope="col">Last Name</th>
+                        <th scope="col">
+                            {
+                                <a  
+                                    href="#"
+                                    className="text-decoration-none"
+                                    onClick={() => handleUsersListSort(userResponseDto.currentPage, "lastName", userResponseDto?.sortDir === 'asc' ? 'desc' : 'asc')}
+                                >
+                                    Last Name <i className={userResponseDto?.sortDir === 'asc' ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+                                </a>
+                            }
+                        </th>
                         <th scope="col">Roles</th>
                         <th scope="col">Enabled</th>
                         <th scope="col">Action</th>

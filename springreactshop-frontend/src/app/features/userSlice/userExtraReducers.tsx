@@ -163,6 +163,7 @@ export const userExtraReducers = {
         });
 
         builder.addCase(listByPage.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
+            console.log(action.payload);
             state.loading = false;
             state.userResponseDto = action.payload;
             state.status = StatusConsts.SUCCESS;

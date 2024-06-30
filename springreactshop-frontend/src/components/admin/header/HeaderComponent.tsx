@@ -1,5 +1,7 @@
+import { useMyRoutes } from "../../myRoutes/MyRoutes";
 
 const HeaderComponent = () => {
+    const {handleListSort} = useMyRoutes();
     return (
         <div className="card">
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -14,7 +16,7 @@ const HeaderComponent = () => {
                                 <a className="nav-link active" aria-current="page" href="/home">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/admin/users/page/1">Users</a>
+                                <a className="nav-link" href="/admin/users">Users</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/admin/categories">Categories</a>

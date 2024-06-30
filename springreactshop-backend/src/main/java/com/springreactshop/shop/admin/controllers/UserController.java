@@ -57,8 +57,8 @@ public class UserController {
                                         startCount,
                                         endCount,
                                         pageNum,
-                                        "firstName",
-                                        "asc");
+                                        sortField,  
+                                        sortDir);
         response.setMessage(pageNum + " page of users");
         return ResponseEntity.ok(response);
     }

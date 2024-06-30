@@ -1,18 +1,24 @@
-import { Route, Routes } from "react-router-dom";
-import AdminHomeComponent from "../admin/home/AdminHomeComponent";
-import ListUsersComponent from "../admin/user/ListUsersComponent";
-import NewUserComponent from "../admin/user/NewUserComponent";
+import { listByPage } from "../../app/features/userSlice/userCreateAsyncThunk";
+import { AppDispatch } from "../../app/store";
+import { useDispatch } from "react-redux";
+import { createContext, useContext } from "react";
 
-const MyRoutes = () => {
+const MyContext = createContext({handleListSort: (pageNum: number, sortField: string, sortDir: string) => {}});
+
+export const MyRoutes = ({children}: any) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleListSort = (pageNum: number, sortField: string, sortDir: string) => {
+        const userListPath = `admin/users/page/${pageNum}?sortField=${sortField}&sortDir=${sortDir}`;
+        console.log(userListPath);
+        dispatch(listByPage(userListPath));
+    }
+
     return (
-        <Routes>
-            <Route path="/home" element={<AdminHomeComponent />} />
-            <Route path="/admin/users" element={<ListUsersComponent />} />
-            <Route path="/admin/users/page/:pageNum" element={<ListUsersComponent />} />
-            <Route path="/admin/newUser" element={<NewUserComponent />} />
-            <Route path="/admin/editUser/:userId" element={<NewUserComponent />} />
-        </Routes>
+        <MyContext.Provider value={{handleListSort}}>
+            {children}
+        </MyContext.Provider>
     );
 }
 
-export default MyRoutes;
+export const useMyRoutes = () => useContext(MyContext);
