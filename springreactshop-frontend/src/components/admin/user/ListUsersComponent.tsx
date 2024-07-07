@@ -11,6 +11,7 @@ import DeleteUserModal from "../../modals/DeleteUserModal";
 import ListUsersTable from "./utility/ListUsersTable";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import UserPagination from "../../paginations/UserPagination";
+import HeaderUsersComponent from "./HeaderUsersComponent";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -82,29 +83,20 @@ const ListUsersComponent = () => {
             });
     }
 
+    function handleExportToCSV() {
+        const userListPath = `admin/users/export/csv`;
+        console.log(userListPath);
+        dispatch(listByPage(userListPath));
+    }
+
     return (
         <div className="card mt-2">
-            <div className="container mb-2">
-                <div className="row">
-                    <h4>Manage Users</h4>
-                    <div className="col">
-                        <div className="input-group mb-3">
-                            <span className="input-group-text" id="inputGroup-sizing-default">Filter :</span>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                aria-label="Sizing example input" 
-                                aria-describedby="inputGroup-sizing-default" 
-                                onChange={(event) => handleUserListFindAll(pageNum ? parseInt(pageNum) : 1, "id", "asc", event.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="col">
-                        <button className="btn btn-primary" onClick={handleNewUser}>Create New User</button>
-                        <button className="btn btn-secondary ml-2" onClick={handleShowDeleteModal}>Delete User</button>
-                    </div>
-                </div>
-            </div>
+            <HeaderUsersComponent 
+                handleUserListFindAll={handleUserListFindAll}
+                pageNum={pageNum ? parseInt(pageNum) : 1}
+                handleNewUser={handleNewUser}
+                handleExportToCSV={handleExportToCSV}
+            />
             {selectorUser.status === StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
             {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}
             <ListUsersTable

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,8 @@ import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.dtos.UserResponseDto;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -37,6 +40,11 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<UserResponseDto> getAllUsers() {
         return listByPage(1, "id", "asc", null);
+    }
+
+    @GetMapping("admin/users/export/csv")
+    public void exportUsersToCSV(HttpServletResponse response) throws IOException {
+        userService.exportUsersToCSV(response);
     }
 
     @GetMapping("/users/page/{pageNum}")

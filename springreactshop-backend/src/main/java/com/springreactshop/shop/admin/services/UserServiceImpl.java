@@ -1,9 +1,11 @@
 package com.springreactshop.shop.admin.services;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.springreactshop.shop.admin.interfaces.repositories.user.IUserRepository;
 import com.springreactshop.shop.admin.interfaces.services.user.IUserService;
+import com.springreactshop.shop.admin.utilities.UserCsvExporter;
 import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.entities.User;
 import com.springreactshop.shop.common.exception.ResourceNotFoundException;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -110,5 +114,12 @@ public class UserServiceImpl implements IUserService<UserDto> {
 
     public void updateUserEnabledStatus(Long userId, boolean enabled) {
         userRepository.updateUserEnabledStatus(userId, enabled);
+    }
+
+    @Override
+    public void exportUsersToCSV(HttpServletResponse response) throws IOException {
+        List<User> users = userRepository.findAll();
+        UserCsvExporter exporter = new UserCsvExporter();
+        exporter.export(users, response);
     }
 }
