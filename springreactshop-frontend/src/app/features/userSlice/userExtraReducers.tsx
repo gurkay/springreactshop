@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, createUserNoUserPhotos, deleteUser, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser, updateUserWithoutPhotos } from "./userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, deleteUser, exportUsersToCSV, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser, updateUserWithoutPhotos } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IUserResponseDto } from "../../../interfaces/dtos/IUserResponseDto";
@@ -171,6 +171,23 @@ export const userExtraReducers = {
         });
     
         builder.addCase(listByPage.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    },
+
+    buildExportUsersToCSV: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(exportUsersToCSV.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+
+        builder.addCase(exportUsersToCSV.fulfilled, (state, action: PayloadAction<string>) => {
+            console.log(action.payload);
+            state.loading = false;
+        });
+    
+        builder.addCase(exportUsersToCSV.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });

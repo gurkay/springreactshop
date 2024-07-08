@@ -12,6 +12,7 @@ const DefaultRoutes = () => {
         <Route path="/admin/users/page/:pageNum" element={<ListUsersComponent />} />
         <Route path="/admin/newUser" element={<NewUserComponent />} />
         <Route path="/admin/editUser/:userId" element={<NewUserComponent />} />
+        
     </Routes>
     );
 }

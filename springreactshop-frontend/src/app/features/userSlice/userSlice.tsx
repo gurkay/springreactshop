@@ -36,6 +36,7 @@ export const userSlice = createSlice({
         userExtraReducers.buildIsEmailUnique(builder);
         userExtraReducers.builderUpdateUser(builder);
         userExtraReducers.buildListByPage(builder);
+        userExtraReducers.buildExportUsersToCSV(builder);
     }
 });
 

@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class UserController {
@@ -42,7 +42,7 @@ public class UserController {
         return listByPage(1, "id", "asc", null);
     }
 
-    @GetMapping("admin/users/export/csv")
+    @GetMapping("/users/export/csv")
     public void exportUsersToCSV(HttpServletResponse response) throws IOException {
         userService.exportUsersToCSV(response);
     }

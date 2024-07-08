@@ -15,6 +15,7 @@ import com.springreactshop.shop.common.entities.User;
 import jakarta.servlet.http.HttpServletResponse;  
 
 public class UserCsvExporter {
+
     public void export(List<User> users, HttpServletResponse response) throws IOException {
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
         String timestamp = dateFormatter.format(new Date());
@@ -38,4 +39,5 @@ public class UserCsvExporter {
         }
         csvWriter.close();
     }
+    
 }

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
-import { deleteUser, listByPage, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, exportUsersToCSV, listByPage, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
@@ -84,9 +84,8 @@ const ListUsersComponent = () => {
     }
 
     function handleExportToCSV() {
-        const userListPath = `admin/users/export/csv`;
-        console.log(userListPath);
-        dispatch(listByPage(userListPath));
+        const path = `admin/users/export/csv`;
+        dispatch(exportUsersToCSV(path));
     }
 
     return (

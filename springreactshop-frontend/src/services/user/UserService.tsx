@@ -57,7 +57,13 @@ const UserService = {
         console.log("UserService:::listByPage:::userListPath: ", userListPath);
         const response = await HttpService.getAxiosClient().get(userListPath);
         return response.data;
-    }
+    },
+
+    exportUsersToCSV:  async (path: string) => {
+        console.log("UserService:::exportUsersToCSV:::path: ", path);
+        const response = await HttpService.getAxiosClient().get(path);
+        return response.data;
+    },
 }
 
 export default UserService;
