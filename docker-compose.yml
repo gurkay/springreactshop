@@ -1,0 +1,27 @@
+version: "3.1"
+services:
+  mysqldb:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=springreactshop
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/springreactshop
+    ports:
+      - 3306:3306
+
+  frontend:
+    build:
+      context: springreactshop-frontend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./springreactshop-frontend/src:/code/src
+      - ./springreactshop-frontend/public:/code/public
+      - /project/node_modules
+    depends_on:
+      - mysqldb
+    expose:
+      - 3306
+      - 33060

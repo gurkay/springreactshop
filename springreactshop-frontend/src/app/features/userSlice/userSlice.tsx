@@ -37,6 +37,7 @@ export const userSlice = createSlice({
         userExtraReducers.builderUpdateUser(builder);
         userExtraReducers.buildListByPage(builder);
         userExtraReducers.buildExportUsersToCSV(builder);
+        userExtraReducers.buildExportUsersToExcel(builder);
     }
 });
 

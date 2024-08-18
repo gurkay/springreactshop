@@ -8,5 +8,21 @@ export const userInitialState: IUserInitialState = {
     isEmailUnique: false,
     loading: false,
     status: StatusConsts.IDLE,
-    responseMessage: ""
+    responseMessage: "",
+    userResponseDto: {
+        userDto: emptyUser,
+        message: "",
+        users: [],
+        pageNum: 0,
+        totalElements: 0,
+        totalPages: 0,
+        startCount: 0,
+        endCount: 0,
+        currentPage: 0,
+        sortField: "",
+        sortDir: "",
+        keyword: "",
+    },
+    exportUserToCSV: "",
+    exportUserToExcel: "",
 };

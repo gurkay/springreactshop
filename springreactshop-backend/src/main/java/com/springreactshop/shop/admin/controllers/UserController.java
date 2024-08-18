@@ -43,8 +43,13 @@ public class UserController {
     }
 
     @GetMapping("/users/export/csv")
-    public void exportUsersToCSV(HttpServletResponse response) throws IOException {
-        userService.exportUsersToCSV(response);
+    public String exportUsersToCSV(HttpServletResponse response) throws IOException {
+        return userService.exportUsersToCSV(response);
+    }
+
+    @GetMapping("/users/export/excel")
+    public String exportUsersToExcel(HttpServletResponse response) throws IOException {
+        return userService.exportUsersToExcel(response);
     }
 
     @GetMapping("/users/page/{pageNum}")

@@ -5,15 +5,16 @@ import NewUserComponent from "../admin/user/NewUserComponent";
 
 const DefaultRoutes = () => {
     return (
-    <Routes>
-        <Route path="/" element={<AdminHomeComponent />} />
-        <Route path="/home" element={<AdminHomeComponent />} />
-        <Route path="/admin/users" element={<ListUsersComponent />} />
-        <Route path="/admin/users/page/:pageNum" element={<ListUsersComponent />} />
-        <Route path="/admin/newUser" element={<NewUserComponent />} />
-        <Route path="/admin/editUser/:userId" element={<NewUserComponent />} />
-        
-    </Routes>
+        <Routes>
+            <Route path="/" element={<AdminHomeComponent />} />
+            <Route path="/home" element={<AdminHomeComponent />} />
+            <Route path="/admin/users" element={<ListUsersComponent />} />
+            <Route path="/admin/users/page/:pageNum" element={<ListUsersComponent />} />
+            <Route path="/admin/newUser" element={<NewUserComponent />} />
+            <Route path="/admin/editUser/:userId" element={<NewUserComponent />} />
+            <Route path="/admin/users/export/csv" element={<ListUsersComponent />} />
+            <Route path="/admin/users/export/excel" />
+        </Routes>
     );
 }
 

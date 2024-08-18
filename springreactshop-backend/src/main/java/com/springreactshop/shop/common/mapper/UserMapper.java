@@ -1,6 +1,7 @@
 package com.springreactshop.shop.common.mapper;
 
 import com.springreactshop.shop.common.dtos.UserDto;
+import com.springreactshop.shop.common.dtos.UserDtoWithoutPass;
 import com.springreactshop.shop.common.entities.Role;
 import com.springreactshop.shop.common.entities.User;
 
@@ -35,5 +36,18 @@ public class UserMapper {
         user.setEnabled(userDto.isEnabled());
         user.setRoles(rolesSet);
         return user;
+    }
+
+    public static UserDtoWithoutPass mapToUserDtoWithoutPass(User user) {
+        return new UserDtoWithoutPass(
+            user.getId(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getPhotos(),
+            user.isEnabled(),
+            user.getRoles(),
+            user.getPhotosImagePath()
+        );
     }
 }

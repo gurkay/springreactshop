@@ -60,7 +60,11 @@ const UserService = {
     },
 
     exportUsersToCSV:  async (path: string) => {
-        console.log("UserService:::exportUsersToCSV:::path: ", path);
+        const response = await HttpService.getAxiosClient().get(path);
+        return response.data;
+    },
+
+    exportUsersToExcel:  async (path: string) => {
         const response = await HttpService.getAxiosClient().get(path);
         return response.data;
     },

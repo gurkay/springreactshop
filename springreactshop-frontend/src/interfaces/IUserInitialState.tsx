@@ -9,4 +9,6 @@ export interface IUserInitialState {
     status: string;
     responseMessage: string;
     userResponseDto: IUserResponseDto;
+    exportUserToCSV: string;
+    exportUserToExcel: string;
 }

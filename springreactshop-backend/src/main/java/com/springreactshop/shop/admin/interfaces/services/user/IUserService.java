@@ -8,5 +8,6 @@ import com.springreactshop.shop.common.dtos.UserDto;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface IUserService<TEntityDto extends UserDto> extends IGenericService<TEntityDto> {
-    public void exportUsersToCSV(HttpServletResponse response) throws IOException;
+    public String exportUsersToCSV(HttpServletResponse response) throws IOException;
+    public String exportUsersToExcel(HttpServletResponse response) throws IOException;
 }

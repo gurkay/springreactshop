@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
-import { deleteUser, exportUsersToCSV, listByPage, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, exportUsersToCSV, exportUsersToExcel, listByPage, updateUserEnabledStatus } from "../../../app/features/userSlice/userCreateAsyncThunk";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllRoles } from "../../../app/features/roleSlice/roleCreateAsyncThunk";
@@ -20,6 +20,7 @@ const ListUsersComponent = () => {
 
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<IUserDto>(emptyUser);
+    const [exportCSV, setExportCSV] = useState<any>();
     const { pageNum } = useParams();
 
     useEffect(() => {
@@ -86,6 +87,39 @@ const ListUsersComponent = () => {
     function handleExportToCSV() {
         const path = `admin/users/export/csv`;
         dispatch(exportUsersToCSV(path));
+
+        setExportCSV(selectorUser.exportUserToCSV);
+
+        console.log('useStat CSV: ',exportCSV);
+        console.log(selectorUser.exportUserToCSV);
+
+        const jsonData = new Blob([JSON.stringify(selectorUser.exportUserToCSV)], {type: 'application/json'});
+        const jsonURL = window.URL.createObjectURL(jsonData);
+        const link = document.createElement('a');
+        link.href = jsonURL;
+        link.download = `${Date.now()}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function handleExportToExcel() {
+        const path = `admin/users/export/excel`;
+        dispatch(exportUsersToExcel(path));
+
+        if(selectorUser.exportUserToExcel) {
+            console.log('useStat Excel: ',selectorUser.exportUserToExcel);
+            // const workbook = new ExcelJS.Workbook();
+            // const worksheet = workbook.addWorksheet('Users');
+
+
+            // const worksheetData = selectorUser.exportUserToExcel;
+            // var FileSaver = require('file-saver');
+
+            // const blob = new Blob([worksheetData], {type: 'application/octet-stream'});
+            // FileSaver.saveAs(blob, `${Date.now()}.xlsx`);
+              
+        }
     }
 
     return (
@@ -95,6 +129,7 @@ const ListUsersComponent = () => {
                 pageNum={pageNum ? parseInt(pageNum) : 1}
                 handleNewUser={handleNewUser}
                 handleExportToCSV={handleExportToCSV}
+                handleExportToExcel={handleExportToExcel}
             />
             {selectorUser.status === StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
             {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}

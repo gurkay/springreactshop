@@ -3,9 +3,10 @@ interface IProps {
     pageNum: number;
     handleNewUser: () => void;
     handleExportToCSV: () => void;
+    handleExportToExcel: () => void;
 }
 
-const HeaderUsersComponent = ({handleUserListFindAll, pageNum, handleNewUser, handleExportToCSV}: IProps) => {
+const HeaderUsersComponent = ({handleUserListFindAll, pageNum, handleNewUser, handleExportToCSV, handleExportToExcel}: IProps) => {
     return(
         <div className="container mb-2">
         <div className="row">
@@ -25,6 +26,7 @@ const HeaderUsersComponent = ({handleUserListFindAll, pageNum, handleNewUser, ha
             <div className="col">
                 <button className="btn btn-primary" onClick={handleNewUser}>Create New User</button>
                 <button className="btn btn-secondary ml-2" onClick={handleExportToCSV}>Export To CSV</button>
+                <button className="btn btn-secondary ml-2" onClick={handleExportToExcel}>Export To Excel</button>
             </div>
         </div>
     </div>

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,9 @@ import org.springframework.stereotype.Service;
 import com.springreactshop.shop.admin.interfaces.repositories.user.IUserRepository;
 import com.springreactshop.shop.admin.interfaces.services.user.IUserService;
 import com.springreactshop.shop.admin.utilities.UserCsvExporter;
+import com.springreactshop.shop.admin.utilities.exporter.UserExcelExporter;
 import com.springreactshop.shop.common.dtos.UserDto;
+import com.springreactshop.shop.common.dtos.UserDtoWithoutPass;
 import com.springreactshop.shop.common.entities.User;
 import com.springreactshop.shop.common.exception.ResourceNotFoundException;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
@@ -117,9 +118,22 @@ public class UserServiceImpl implements IUserService<UserDto> {
     }
 
     @Override
-    public void exportUsersToCSV(HttpServletResponse response) throws IOException {
+    public String exportUsersToCSV(HttpServletResponse response) throws IOException {
         List<User> users = userRepository.findAll();
+        List<UserDtoWithoutPass> usersWithoutPass = users.stream()
+            .map(UserMapper::mapToUserDtoWithoutPass)
+            .collect(Collectors.toList());
         UserCsvExporter exporter = new UserCsvExporter();
-        exporter.export(users, response);
+        return exporter.export(usersWithoutPass, response);
+    }
+
+    @Override
+    public String exportUsersToExcel(HttpServletResponse response) throws IOException {
+        List<User> users = userRepository.findAll();
+        List<UserDtoWithoutPass> usersWithoutPass = users.stream()
+                                                        .map(UserMapper::mapToUserDtoWithoutPass)
+                                                        .collect(Collectors.toList());
+        UserExcelExporter exporter = new UserExcelExporter();
+        return exporter.export(usersWithoutPass, response);
     }
 }
