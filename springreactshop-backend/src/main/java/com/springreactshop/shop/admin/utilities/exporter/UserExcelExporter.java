@@ -65,7 +65,7 @@ public class UserExcelExporter extends AbstractExporter {
         cell.setCellStyle(cellStyle);
     }
 
-    private void writeDataLines(List<User> listUsers){
+    private void writeDataLines(List<UserDtoWithoutPass> listUsers){
         int rowIndex = 1;
 
         XSSFCellStyle cellStyle = workbook.createCellStyle();
@@ -73,7 +73,7 @@ public class UserExcelExporter extends AbstractExporter {
         font.setFontHeight(14);
         cellStyle.setFont(font);
 
-        for (User user : listUsers) {
+        for (UserDtoWithoutPass user : listUsers) {
             XSSFRow row = sheet.createRow(rowIndex++);
             int columnIndex = 0;
             createCell(row, columnIndex++, user.getId(), cellStyle);
@@ -83,6 +83,19 @@ public class UserExcelExporter extends AbstractExporter {
             createCell(row, columnIndex++, user.getRoles().toString(), cellStyle);
             createCell(row, columnIndex++, user.isEnabled(), cellStyle);
         }
+    }
+
+    public void export2(List<UserDtoWithoutPass> listUsers, HttpServletResponse httpServletResponse) throws IOException {
+        super.setResponseHeader(httpServletResponse, "application/octet-stream", ".xlsx", "users_");
+
+        writeHeaderLine();
+        writeDataLines(listUsers);
+
+        ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+        workbook.write(outputStream);
+
+        workbook.close();
+        outputStream.close();
     }
 
     public String export(List<UserDtoWithoutPass> listUsers, HttpServletResponse httpServletResponse) throws IOException {
@@ -104,8 +117,10 @@ public class UserExcelExporter extends AbstractExporter {
         ExportMyData myData = new ExportMyData(fileName, listUsers);
         
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(myData);
+        String jsonString = objectMapper.writeValueAsString(listUsers);
         
         return jsonString;
     }
+
+
 }

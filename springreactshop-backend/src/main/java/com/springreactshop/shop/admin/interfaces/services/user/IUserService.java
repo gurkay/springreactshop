@@ -10,4 +10,5 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface IUserService<TEntityDto extends UserDto> extends IGenericService<TEntityDto> {
     public String exportUsersToCSV(HttpServletResponse response) throws IOException;
     public String exportUsersToExcel(HttpServletResponse response) throws IOException;
+    public void exportUsersToExcel2(HttpServletResponse response) throws IOException;
 }

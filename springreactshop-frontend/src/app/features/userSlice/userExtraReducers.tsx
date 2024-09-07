@@ -163,7 +163,6 @@ export const userExtraReducers = {
         });
 
         builder.addCase(listByPage.fulfilled, (state, action: PayloadAction<IUserResponseDto>) => {
-            console.log(action.payload);
             state.loading = false;
             state.userResponseDto = action.payload;
             state.status = StatusConsts.SUCCESS;
@@ -200,8 +199,9 @@ export const userExtraReducers = {
         });
 
         builder.addCase(exportUsersToExcel.fulfilled, (state, action: PayloadAction<string>) => {
-            state.exportUserToExcel = action.payload;
+            state.status = StatusConsts.SUCCESS;
             state.loading = false;
+            state.exportUserToExcel = action.payload;
         });
     
         builder.addCase(exportUsersToExcel.rejected, (state) => {

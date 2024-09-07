@@ -52,6 +52,11 @@ public class UserController {
         return userService.exportUsersToExcel(response);
     }
 
+    @GetMapping("/users/export/excel2")
+    public void exportUsersToExcel2(HttpServletResponse response) throws IOException {
+        userService.exportUsersToExcel2(response);
+    }
+
     @GetMapping("/users/page/{pageNum}")
     public ResponseEntity<UserResponseDto> listByPage(
                                                 @PathVariable("pageNum") int pageNum,

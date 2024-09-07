@@ -5,12 +5,12 @@ import { IUserResponseDto } from "../../../../interfaces/dtos/IUserResponseDto";
 interface IProps {
     userResponseDto: IUserResponseDto;
     handleEditUser: (userId: number) => void;
-    setSelectedUser: (user: IUserDto) => void;
+    handleShowDeleteModal: (user: IUserDto) => void;
     handleUpdateUserEnabledStatus: (userId: number, enabled: boolean) => void;
     handleUsersListSort: (page: number, sortField: string, sortDir: string, keyword: string) => void;
 }
 
-const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, handleUpdateUserEnabledStatus, handleUsersListSort }: IProps) => {
+const ListUsersTable = ({ userResponseDto, handleEditUser, handleShowDeleteModal, handleUpdateUserEnabledStatus, handleUsersListSort }: IProps) => {
 
     return (
         <div className="container">
@@ -138,9 +138,7 @@ const ListUsersTable = ({ userResponseDto, handleEditUser, setSelectedUser, hand
                                     <button
                                         className="btn btn-danger"
                                         title="Delete user"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"
-                                        onClick={() => setSelectedUser(user)}
+                                        onClick={() => handleShowDeleteModal(user)}
                                         style={{ marginLeft: '10px' }}
                                     ><i className="bi bi-trash"></i>
                                     </button>

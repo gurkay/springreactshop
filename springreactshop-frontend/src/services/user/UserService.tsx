@@ -54,8 +54,9 @@ const UserService = {
     },
 
     listByPage: async (userListPath: string) => {
-        console.log("UserService:::listByPage:::userListPath: ", userListPath);
+        console.log("listByPage: " + userListPath);
         const response = await HttpService.getAxiosClient().get(userListPath);
+        console.log("listByPage: " , response.data);
         return response.data;
     },
 

@@ -14,15 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserCsvExporter {
 
     public String export(List<UserDtoWithoutPass> users, HttpServletResponse response) throws IOException {
-        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
-        String timestamp = dateFormatter.format(new Date());
-        String fileName = "users_" + timestamp + ".csv";
-
-        ExportMyData myData = new ExportMyData(fileName, users);
-        
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(myData);
-
+        String jsonString = objectMapper.writeValueAsString(users);
         return jsonString;
     }
     

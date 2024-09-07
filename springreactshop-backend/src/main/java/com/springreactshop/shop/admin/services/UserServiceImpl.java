@@ -136,4 +136,14 @@ public class UserServiceImpl implements IUserService<UserDto> {
         UserExcelExporter exporter = new UserExcelExporter();
         return exporter.export(usersWithoutPass, response);
     }
+
+    @Override
+    public void exportUsersToExcel2(HttpServletResponse response) throws IOException {
+        List<User> users = userRepository.findAll();
+        List<UserDtoWithoutPass> usersWithoutPass = users.stream()
+                                                        .map(UserMapper::mapToUserDtoWithoutPass)
+                                                        .collect(Collectors.toList());
+        UserExcelExporter exporter = new UserExcelExporter();
+        exporter.export2(usersWithoutPass, response);
+    }
 }

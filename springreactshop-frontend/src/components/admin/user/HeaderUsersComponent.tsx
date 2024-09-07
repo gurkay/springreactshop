@@ -24,9 +24,9 @@ const HeaderUsersComponent = ({handleUserListFindAll, pageNum, handleNewUser, ha
                 </div>
             </div>
             <div className="col">
-                <button className="btn btn-primary" onClick={handleNewUser}>Create New User</button>
-                <button className="btn btn-secondary ml-2" onClick={handleExportToCSV}>Export To CSV</button>
-                <button className="btn btn-secondary ml-2" onClick={handleExportToExcel}>Export To Excel</button>
+                <button className="btn btn-link" onClick={handleNewUser} style={{textDecoration: 'none'}}>Create New User</button>
+                <button className="btn btn-link" onClick={handleExportToCSV} style={{textDecoration: 'none'}}>Export To CSV</button>
+                <button className="btn btn-link" onClick={handleExportToExcel} style={{textDecoration: 'none'}}>Export To Excel</button>
             </div>
         </div>
     </div>
