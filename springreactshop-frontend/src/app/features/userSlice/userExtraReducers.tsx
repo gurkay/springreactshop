@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit";
 import { IUserInitialState } from "../../../interfaces/IUserInitialState";
-import { createUser, createUserNoUserPhotos, deleteUser, exportUsersToCSV, exportUsersToExcel, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser, updateUserWithoutPhotos } from "./userCreateAsyncThunk";
+import { createUser, createUserNoUserPhotos, deleteUser, exportUsersToCSV, exportUsersToExcel, exportUsersToPdf, getAllUsers, getUserById, isEmailUnique, listByPage, updateUser, updateUserWithoutPhotos } from "./userCreateAsyncThunk";
 import { StatusConsts } from "../../../constants/StatusConsts";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IUserResponseDto } from "../../../interfaces/dtos/IUserResponseDto";
@@ -205,6 +205,24 @@ export const userExtraReducers = {
         });
     
         builder.addCase(exportUsersToExcel.rejected, (state) => {
+            state.loading = false;
+            state.status = StatusConsts.ERROR;
+        });
+    },
+
+    buildExportUsersToPdf: function(builder: ActionReducerMapBuilder<IUserInitialState>) {
+        builder.addCase(exportUsersToPdf.pending, (state) => {
+            state.loading = true;
+            state.status = StatusConsts.LOADING;
+        });
+
+        builder.addCase(exportUsersToPdf.fulfilled, (state, action: PayloadAction<string>) => {
+            state.status = StatusConsts.SUCCESS;
+            state.loading = false;
+            state.exportUserToPdf = action.payload;
+        });
+    
+        builder.addCase(exportUsersToPdf.rejected, (state) => {
             state.loading = false;
             state.status = StatusConsts.ERROR;
         });

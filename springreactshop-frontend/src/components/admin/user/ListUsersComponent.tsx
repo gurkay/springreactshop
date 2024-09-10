@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ImportAll } from "../../../utils/ImportAll";
 import { IUserDto } from "../../../interfaces/dtos/IUserDto";
 import { IData } from "../../../interfaces/IData";
+import jsPDF from "jspdf";
 
 const ListUsersComponent = () => {
     const navigate = useNavigate();
@@ -127,6 +128,29 @@ const ListUsersComponent = () => {
                 }
                 handleCloseExportToUserModal();
                 break;
+            case 'pdf':
+                fileName = `${Date.now()}.pdf`;
+                jsonData = JSON.parse(JSON.stringify(selectorUser.exportUserToPdf));
+                // Yeni bir jsPDF nesnesi oluştur
+                const doc = new jsPDF();
+                // Başlık ekle
+                doc.setFontSize(14);
+                doc.text('JSON Verileri PDF', 10, 10);
+                if (jsonData.length > 0) {
+                    let yOffset = 20; // Başlıktan itibaren yazılacak ilk satırın y eksenindeki konumu
+                    jsonData.forEach((data) => {
+                        doc.setFontSize(12);
+                        doc.text(`ID:${data.id}, Email:${data.email}, FirstName:${data.firstName}, LastName:${data.lastName}, Roles:${data.roles}`, 10, yOffset);
+                        yOffset += 10; // Her satır için aşağı kaydır
+                    });
+                    // CSV dosyasını oluştur ve kaydet
+                    const buffer = await doc.output('blob');
+                    const blob = new Blob([buffer], { type: 'text/pdf;charset=utf-8;' });
+                    // Dosyayı indir
+                    ImportAll.saveAs(blob, fileName);
+                }
+                handleCloseExportToUserModal();
+                break;
         }
     }
 
@@ -144,6 +168,13 @@ const ListUsersComponent = () => {
         handleShowExportToUserModal();
     }
 
+    async function handleExportToPdf() {
+        const path = `admin/users/export/pdf`;
+        dispatch(ImportAll.exportUsersToPdf(path));
+        setFileType('pdf');
+        handleShowExportToUserModal();
+    }
+
     return (
         <div className="card mt-2">
             <ImportAll.HeaderUsersComponent
@@ -152,6 +183,7 @@ const ListUsersComponent = () => {
                 handleNewUser={handleNewUser}
                 handleExportToCSV={handleExportToCSV}
                 handleExportToExcel={handleExportToExcel}
+                handleExportToPdf={handleExportToPdf}
             />
             {selectorUser.status === ImportAll.StatusConsts.LOADING && <div className="text-center mt-2"><i className="fas fa-spinner fa-spin fa-2x"></i></div>}
             {selectorUser.userResponseDto?.message && <div className="alert alert-success" role="alert">{selectorUser.userResponseDto.message}</div>}

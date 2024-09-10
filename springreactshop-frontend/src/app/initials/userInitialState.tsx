@@ -25,4 +25,5 @@ export const userInitialState: IUserInitialState = {
     },
     exportUserToCSV: "",
     exportUserToExcel: "",
+    exportUserToPdf: "",
 };

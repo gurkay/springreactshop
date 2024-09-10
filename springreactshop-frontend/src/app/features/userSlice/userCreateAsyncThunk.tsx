@@ -66,3 +66,8 @@ export const exportUsersToExcel: any = createAsyncThunk('exportUsersToExcel', as
   const response = await UserService.exportUsersToExcel(path);
   return Promise.resolve(response);
 });
+
+export const exportUsersToPdf: any = createAsyncThunk('exportUsersToPdf', async (path: string) => {
+  const response = await UserService.exportUsersToPdf(path);
+  return Promise.resolve(response);
+});

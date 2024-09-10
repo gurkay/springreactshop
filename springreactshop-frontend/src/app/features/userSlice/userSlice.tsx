@@ -38,6 +38,7 @@ export const userSlice = createSlice({
         userExtraReducers.buildListByPage(builder);
         userExtraReducers.buildExportUsersToCSV(builder);
         userExtraReducers.buildExportUsersToExcel(builder);
+        userExtraReducers.buildExportUsersToPdf(builder);
     }
 });
 

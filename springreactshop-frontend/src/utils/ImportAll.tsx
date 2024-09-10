@@ -1,5 +1,5 @@
 
-import { deleteUser, exportUsersToCSV, exportUsersToExcel, listByPage, updateUserEnabledStatus } from "../app/features/userSlice/userCreateAsyncThunk";
+import { deleteUser, exportUsersToCSV, exportUsersToExcel, exportUsersToPdf, listByPage, updateUserEnabledStatus } from "../app/features/userSlice/userCreateAsyncThunk";
 import { getAllRoles } from "../app/features/roleSlice/roleCreateAsyncThunk";
 import { setResponseMessage, setUser } from "../app/features/userSlice/userSlice";
 import { emptyUser } from "../constants/emptyUser";
@@ -29,5 +29,6 @@ export const ImportAll = {
     HeaderUsersComponent,
     ExcelJS,
     saveAs,
-    ExportToCSVUserModal
+    ExportToCSVUserModal,
+    exportUsersToPdf,
 }

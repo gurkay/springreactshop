@@ -11,4 +11,5 @@ export interface IUserInitialState {
     userResponseDto: IUserResponseDto;
     exportUserToCSV: string;
     exportUserToExcel: string;
+    exportUserToPdf: string;
 }

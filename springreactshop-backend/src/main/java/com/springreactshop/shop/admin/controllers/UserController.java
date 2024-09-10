@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -24,8 +23,6 @@ import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.dtos.UserResponseDto;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -43,18 +40,18 @@ public class UserController {
     }
 
     @GetMapping("/users/export/csv")
-    public String exportUsersToCSV(HttpServletResponse response) throws IOException {
-        return userService.exportUsersToCSV(response);
+    public String exportUsersToCSV() throws IOException {
+        return userService.exportUsersToCSV();
     }
 
     @GetMapping("/users/export/excel")
-    public String exportUsersToExcel(HttpServletResponse response) throws IOException {
-        return userService.exportUsersToExcel(response);
+    public String exportUsersToExcel() throws IOException {
+        return userService.exportUsersToExcel();
     }
 
-    @GetMapping("/users/export/excel2")
-    public void exportUsersToExcel2(HttpServletResponse response) throws IOException {
-        userService.exportUsersToExcel2(response);
+    @GetMapping("/users/export/pdf")
+    public String exportUsersToPdf() throws IOException {
+        return userService.exportUsersToPDF();
     }
 
     @GetMapping("/users/page/{pageNum}")

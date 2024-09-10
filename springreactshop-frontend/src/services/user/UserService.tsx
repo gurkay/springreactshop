@@ -69,6 +69,11 @@ const UserService = {
         const response = await HttpService.getAxiosClient().get(path);
         return response.data;
     },
+
+    exportUsersToPdf:  async (path: string) => {
+        const response = await HttpService.getAxiosClient().get(path);
+        return response.data;
+    },
 }
 
 export default UserService;

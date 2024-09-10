@@ -16,6 +16,7 @@ import com.springreactshop.shop.admin.interfaces.repositories.user.IUserReposito
 import com.springreactshop.shop.admin.interfaces.services.user.IUserService;
 import com.springreactshop.shop.admin.utilities.UserCsvExporter;
 import com.springreactshop.shop.admin.utilities.exporter.UserExcelExporter;
+import com.springreactshop.shop.admin.utilities.exporter.UserPdfExporter;
 import com.springreactshop.shop.common.dtos.UserDto;
 import com.springreactshop.shop.common.dtos.UserDtoWithoutPass;
 import com.springreactshop.shop.common.entities.User;
@@ -23,7 +24,6 @@ import com.springreactshop.shop.common.exception.ResourceNotFoundException;
 import com.springreactshop.shop.common.exception.UserNotFoundException;
 import com.springreactshop.shop.common.mapper.UserMapper;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -118,32 +118,32 @@ public class UserServiceImpl implements IUserService<UserDto> {
     }
 
     @Override
-    public String exportUsersToCSV(HttpServletResponse response) throws IOException {
+    public String exportUsersToCSV() throws IOException {
         List<User> users = userRepository.findAll();
         List<UserDtoWithoutPass> usersWithoutPass = users.stream()
             .map(UserMapper::mapToUserDtoWithoutPass)
             .collect(Collectors.toList());
         UserCsvExporter exporter = new UserCsvExporter();
-        return exporter.export(usersWithoutPass, response);
+        return exporter.export(usersWithoutPass);
     }
 
     @Override
-    public String exportUsersToExcel(HttpServletResponse response) throws IOException {
+    public String exportUsersToExcel() throws IOException {
         List<User> users = userRepository.findAll();
         List<UserDtoWithoutPass> usersWithoutPass = users.stream()
                                                         .map(UserMapper::mapToUserDtoWithoutPass)
                                                         .collect(Collectors.toList());
         UserExcelExporter exporter = new UserExcelExporter();
-        return exporter.export(usersWithoutPass, response);
+        return exporter.export(usersWithoutPass);
     }
 
     @Override
-    public void exportUsersToExcel2(HttpServletResponse response) throws IOException {
+    public String exportUsersToPDF() throws IOException {
         List<User> users = userRepository.findAll();
         List<UserDtoWithoutPass> usersWithoutPass = users.stream()
-                                                        .map(UserMapper::mapToUserDtoWithoutPass)
-                                                        .collect(Collectors.toList());
-        UserExcelExporter exporter = new UserExcelExporter();
-        exporter.export2(usersWithoutPass, response);
+            .map(UserMapper::mapToUserDtoWithoutPass)
+            .collect(Collectors.toList());
+        UserPdfExporter exporter = new UserPdfExporter();
+        return exporter.export(usersWithoutPass);
     }
 }

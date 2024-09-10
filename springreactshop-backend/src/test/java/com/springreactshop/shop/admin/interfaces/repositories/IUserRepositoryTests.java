@@ -144,7 +144,7 @@ public class IUserRepositoryTests {
 
     @Test
     public void testFindAll() {
-        String keyword = "basyigit";
+        String keyword = "basyigit  ";
         int pageNumber = 0;
         int pageSize = 5;
 
